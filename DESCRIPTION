@@ -2,8 +2,9 @@ Package: PMC
 Type: Package
 Title: The Peat Moisture Code
 Version: 0.1.0
-Author@R:
-    person("Sophie", "Wilkinson", "sophie_wilkinson@sfu.ca", role = c("", ""), comment = c(ORCID = "0000-0002-4043-6277"))
+Authors@R:
+    person("Sophie", "Wilkinson", , "sophie_wilkinson@sfu.ca", role = c("aut", "cre"), 
+    comment = c(ORCID = "0000-0002-4043-6277"))
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: 
     The PMC incorporates peatland hydrological research to model the 
@@ -14,3 +15,6 @@ LazyData: true
 URL: https://github.com/ElizabethArangoRuda/PMC
 BugReports: https://github.com/ElizabethArangoRuda/PMC/issues
 RoxygenNote: 7.2.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
