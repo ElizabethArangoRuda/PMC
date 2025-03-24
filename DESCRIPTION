@@ -1,13 +1,16 @@
 Package: PMC
 Type: Package
-Title: What the Package Does (Title Case)
+Title: The Peat Moisture Code
 Version: 0.1.0
-Author: Who wrote it
+Author@R:
+    person("Sophie", "Wilkinson", "sophie_wilkinson@sfu.ca", role = c("", ""), comment = c(ORCID = "0000-0002-4043-6277"))
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: 
+    The PMC incorporates peatland hydrological research to model the 
+    change in storage in the peatland water balance in a simple to use bookkeeping approach, akin to that used for the Drought Code and the Duff Moisture Code. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/ElizabethArangoRuda/PMC
 BugReports: https://github.com/ElizabethArangoRuda/PMC/issues
+RoxygenNote: 7.2.1
