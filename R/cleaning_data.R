@@ -1,10 +1,8 @@
 #' Clean the initial dataframe
 #'
 #' @param input_data A dataframe that contains columns 'Date', 'Tmin', 'Tmax', 'PPT'
-#'
 #' @return A dataframe with date columns of class Date, and the other variables as numeric
 #' @export
-#'
 #' @examples
 #' cleaning_data(input_data)
 cleaning_data <- function(input_data) {
