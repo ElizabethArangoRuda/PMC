@@ -7,9 +7,9 @@
 mm_to_cm(input_data, columns)
 }
 \arguments{
-\item{columns}{Selected column by the user such as 'PET' and/or 'PPT'.}
+\item{input_data}{A dataframe that contains columns 'Date', 'Tmin', 'Tmax', 'PPT'}
 
-\item{input.data}{A dataframe that contains columns 'Date', 'Tmin', 'Tmax', 'PPT'}
+\item{columns}{Selected column by the user such as 'PET' and/or 'PPT'.}
 }
 \value{
 A dataframe with original columns, except for the selected columns converted to centimeters.
@@ -18,5 +18,8 @@ A dataframe with original columns, except for the selected columns converted to 
 Function to convert a variable from millimeters (mm) to centimeters (cm)
 }
 \examples{
+input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
+"2023-01-03")), Tmin = c(-36.1, -23.8, -25.6), Tmax = c(-27.0, -7.5, -12.4),
+PPT = c(0.0, 2.1, 0.1))
 mm_to_cm(input_data, columns = c("PPT"))
 }
