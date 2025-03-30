@@ -1,26 +1,38 @@
 #' Pryestly-Taylor Potential Evapotranspiration
 #'
-#' @param input.data
-#' @param latitude
-#' @param alpha
-#' @param y
-#' @param Gsc
-#' @param lambda
-#' @param a
-#' @param b
+#' @param input.data A dataframe containing the columns 'Date', 'Tmin', 'Tmax', and 'PPT'.
+#' @param latitude The location in decimal degrees.
+#' @param alpha The Priestly-Taylor alpha constant.
+#' @param y The psychrometric constant in kPa/°C.
+#' @param Gsc The solar constant in MJ m^-2 min^-1.
+#' @param lambda The latent heat of vaporization in MJ m^-3.
+#' @param a A constant used in the calculation of shortwave radiation from Kext.
+#' @param b A constant used in the calculation of shortwave radiation from Kext.
 #'
-#' @returns
+#' @returns A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET).
 #' @export
 #'
 #' @examples
+#' input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
+#' "2023-01-03")), Tmin = c(-36.1, -23.8, -25.6), Tmax = c(-27.0, -7.5, -12.4),
+#' PPT = c(0.0, 2.1, 0.1))
+#' Calculate_PET(input_data,
+#' latitude = 56.9002499,
+#' alpha = 1,
+#' y = 0.063,
+#' Gsc=0.0820,
+#' lambda=2453,
+#' a=0.11,
+#' b=0.59)
+#'
 Calculate_PET <- function(input.data,
-                           latitude = 56.9002499,
-                           alpha = 1, # Priestly-Taylor alpha constant
-                           y = 0.063, #  Psychrometric constant (kPa/°C)
-                           Gsc = 0.0820, # Solar constant in MJ m^-2 min^-1
-                           lambda = 2453,
-                           a = 0.11, # Constant in calculation of Rn from Kext
-                           b = 0.59 # Constant in calculation of Rn from Kext
+                           latitude,
+                           alpha,
+                           y,
+                           Gsc,
+                           lambda,
+                           a,
+                           b
 ) {
 
   # Check if either Tmean exists or both Tmin and Tmax exist
