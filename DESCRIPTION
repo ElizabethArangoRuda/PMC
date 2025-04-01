@@ -20,8 +20,7 @@ Imports:
     ggplot2,
     purrr,
     scales,
-    cowplot,
-    tidyverse
+    cowplot
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
