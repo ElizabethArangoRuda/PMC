@@ -16,7 +16,7 @@ A tibble with 730 rows and 5 variables:
 }
 \source{
 Simulated or collected from a weather station at Mildred Lake.
-data(Mildred_Lake_Data)
+data("Mildred_Lake_Data")
 }
 \usage{
 Mildred_Lake_Data
