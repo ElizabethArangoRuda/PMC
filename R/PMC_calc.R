@@ -106,14 +106,22 @@ PMC_calc <- function(input_data,
     input_data$AET_today[i] <- AET_today
   }
 
+  start_year <- as.numeric(format(min(input_data$Date), "%Y"))
+  end_year <- as.numeric(format(max(input_data$Date), "%Y"))
+  mid_dates <- seq.Date(
+    from = as.Date(paste0(start_year, "-07-01")),
+    to = as.Date(paste0(end_year, "-07-01")),
+    by = "1 year"
+  )
+
 
   plot <- ggplot2::ggplot(input_data, ggplot2::aes(x=Date)) +
     ggplot2::geom_point(ggplot2::aes(y=PMC), color = "steelblue") +
     ggplot2::geom_line(ggplot2::aes(y=PMC), color = "steelblue") +
     ggplot2::scale_x_date(
       name = "Date",
-      date_breaks = "year",
-      labels = scales::date_format("%Y"),
+      breaks = mid_dates,
+      labels = format(mid_dates, "%Y"),
       expand = c(0.004, 0.004)
     ) +
     ggplot2::scale_y_continuous(name = "PMC",
@@ -122,7 +130,7 @@ PMC_calc <- function(input_data,
                        expand = c(0.004, 0.004)) +
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
       axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",

@@ -40,10 +40,31 @@ cleaning_data <- function(input_data) {
 
   # Check if PET column exists and provide a message if not
   if (!"PET" %in% colnames(input_data)) {
-    message("The 'PET' column is missing. You can calculate it using the 'PET_ESTIMATION()' function.")
+    message("The 'PET' column is missing. You can calculate it using the 'Calculate_PET()' function.")
   }
 
   message("Data processed successfully with ", nrow(input_data), " rows and ", ncol(input_data), " columns.")
+
+  # Check for missing values (excluding Date column)
+  missing_count <- sum(is.na(input_data[-which(names(input_data) == "Date")]))
+  if (missing_count > 0){
+    cat("\n Warning: Your dataset contains", missing_count, "missing values.\n")
+    cat("Do you want to interpolate them?\n")
+    cat(" 1: Yes, interpolate\n")
+    cat(" 2: No, keep the missing values\n")
+
+    user_choice <- readline(prompt = "Enter your choice (1 or 2): ")
+
+    if (user_choice == "1"){
+      input_data <- dplyr::mutate(input_data, dplyr::across(.cols = -Date, .fns = ~ zoo::na.approx(., na.rm=FALSE)
+                                                            ))
+      message("Missing values have been interpolated.")
+    } else {
+      message("Missing values were not interpolated.")
+    }
+  } else {
+    message("No missing values found.")
+  }
 
   # Return the processed dataframe
   return(input_data)

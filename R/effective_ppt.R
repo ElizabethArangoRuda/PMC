@@ -9,7 +9,7 @@
 #' input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
 #' "2023-01-03")), Tmin = c(-36.1, -23.8, -25.6), Tmax = c(-27.0, -7.5, -12.4),
 #' PPT = c(0.0, 2.1, 0.1))
-#' effective_ppt(input_data, column = "PPT", threshold = 0.01)
+#' effective_ppt(input_data, column = "PPT", threshold = 0.1)
 
 effective_ppt <- function(input_data, column, threshold){
 
@@ -31,20 +31,28 @@ effective_ppt <- function(input_data, column, threshold){
     stop("Error: The dataset must contain a 'Date' column formatted as 'YYYY-MM-DD'.")
   }
 
+  start_year <- as.numeric(format(min(input_data$Date), "%Y"))
+  end_year <- as.numeric(format(max(input_data$Date), "%Y"))
+  mid_dates <- seq.Date(
+    from = as.Date(paste0(start_year, "-07-01")),
+    to = as.Date(paste0(end_year, "-07-01")),
+    by = "1 year"
+  )
+
   # Plot the effective precipitation
   plot1 <- ggplot2::ggplot(input_data, ggplot2::aes(x = Date, y = eff_Precip_cm)) +
     ggplot2::geom_col(color = "blue") +
     ggplot2::scale_x_date(
       name = "Date",
-      date_breaks = "1 year",
-      labels = scales::date_format("%Y"),  # Explicitly call `scales::date_format()`
-      expand = c(0, 0)
+      breaks = mid_dates,
+      labels = format(mid_dates, "%Y"),
+      expand = c(0.004, 0.004)
     ) +
     ggplot2::scale_y_continuous(quote("Effective Precipitation (cm)"),
                        expand = c(0.004, 0.004)) +
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
       axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",

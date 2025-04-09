@@ -32,7 +32,8 @@ Calculate_PET <- function(input.data,
                            Gsc,
                            lambda,
                            a,
-                           b
+                           b,
+                          year_to_plot=NULL
 ) {
 
   # Check if either Tmean exists or both Tmin and Tmax exist
@@ -83,15 +84,30 @@ Calculate_PET <- function(input.data,
                               slope = 0.61365 * (17.502 / (240.97 + Tmean) - 17.502 * Tmean / ((240.97 + Tmean)^2)) * exp(17.502 * Tmean / (240.97 + Tmean)), # Slope of the saturation vapor pressure curve (kPa/°C)
                               PET_Calculated = alpha * (slope / ((slope + y) * lambda)) * Rn * 100) # Daily ET in mm/day
 
+  # Visuals
+  if (!is.null(year_to_plot)){
+    input_data <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
+    message(paste("Plotting data for year:", year_to_plot))
+  }
+
+  start_year <- as.numeric(format(min(input.data$Date), "%Y"))
+  end_year <- as.numeric(format(max(input.data$Date), "%Y"))
+  mid_dates <- seq.Date(
+    from = as.Date(paste0(start_year, "-07-01")),
+    to = as.Date(paste0(end_year, "-07-01")),
+    by = "1 year"
+  )
+
 
   ## Plot daily ET
   plot1 <- ggplot2::ggplot(input.data, ggplot2::aes(x=Date)) +
     ggplot2::geom_line(ggplot2::aes(y=PET_Calculated), color = "blue") +
     ggplot2::scale_x_date(
       name = "Date",
-      date_breaks = "year",
-      labels = scales::date_format("%Y"),
-      expand = c(0.004, 0.004)) +
+      breaks = mid_dates,
+      labels = format(mid_dates, "%Y"),
+      expand = c(0.004, 0.004)
+    ) +
     ggplot2::scale_y_continuous(name = "PET (cm)",
                        #limits = c(0, 1),
                        #breaks = seq(0, 1, by = 0.2),
@@ -99,7 +115,7 @@ Calculate_PET <- function(input.data,
     ggplot2::labs(title="Priestly-Taylor Potential Evapotranspiration")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = 0.5, color = "black"),
       axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
