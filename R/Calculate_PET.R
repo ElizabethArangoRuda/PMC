@@ -8,7 +8,7 @@
 #' @param lambda The latent heat of vaporization in MJ m^-3.
 #' @param a A constant used in the calculation of shortwave radiation from Kext.
 #' @param b A constant used in the calculation of shortwave radiation from Kext.
-#'
+#' @param year_to_plot Select the year of choice to plot.
 #' @returns A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET).
 #' @export
 #'
@@ -50,9 +50,14 @@ Calculate_PET <- function(input.data,
   }
 
   # Check if meant temperature (Tmean) exists; if not, calculate it
-  if (!"Tmean" %in% colnames(input.data)){
+  if (!"Tmean" %in% colnames(input.data)) {
+    # If Tmean doesn't exist, calculate it from Tmin and Tmax
+    input.data <- dplyr::mutate(input.data, Tmean = (Tmin + Tmax) / 2)
+
+  } else {
+    # If Tmean exists but has missing values, fill them
     input.data <- dplyr::mutate(input.data,
-                                Tmean = (Tmin + Tmax) / 2 # If Tmean doesn't exist, calculate it
+                                Tmean = ifelse(is.na(Tmean), (Tmin + Tmax) / 2, Tmean)
     )
   }
 

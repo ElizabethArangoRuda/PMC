@@ -25,6 +25,15 @@ cleaning_data <- function(input_data) {
     stop("Error: input_data must be a dataframe.")
   }
 
+  required_cols <- c("Date", "Tmin", "Tmax", "PPT")
+
+  if (!all(required_cols %in% colnames(input_data))){
+    missing_cols <- required_cols[!required_cols %in% colnames(input_data)]
+    stop(paste("Error: The following required columns are missing:", paste(missing_cols, collapse = ",")))
+  }
+
+  input_data <- input_data[, required_cols]
+
   # Check for "Date" Column
   if (!"Date" %in% colnames(input_data)) {
     stop("Error: The dataset must contain a 'Date' column formatted as 'YYYY-MM-DD'.")
@@ -47,6 +56,7 @@ cleaning_data <- function(input_data) {
 
   # Check for missing values (excluding Date column)
   missing_count <- sum(is.na(input_data[-which(names(input_data) == "Date")]))
+  input_data <- dplyr::mutate(input_data, dplyr::across(.cols = -Date, as.numeric))
   if (missing_count > 0){
     cat("\n Warning: Your dataset contains", missing_count, "missing values.\n")
     cat("Do you want to interpolate them?\n")

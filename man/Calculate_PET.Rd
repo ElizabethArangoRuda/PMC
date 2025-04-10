@@ -4,7 +4,17 @@
 \alias{Calculate_PET}
 \title{Pryestly-Taylor Potential Evapotranspiration}
 \usage{
-Calculate_PET(input.data, latitude, alpha, y, Gsc, lambda, a, b)
+Calculate_PET(
+  input.data,
+  latitude,
+  alpha,
+  y,
+  Gsc,
+  lambda,
+  a,
+  b,
+  year_to_plot = NULL
+)
 }
 \arguments{
 \item{input.data}{A dataframe containing the columns 'Date', 'Tmin', 'Tmax', and 'PPT'.}
@@ -22,6 +32,8 @@ Calculate_PET(input.data, latitude, alpha, y, Gsc, lambda, a, b)
 \item{a}{A constant used in the calculation of shortwave radiation from Kext.}
 
 \item{b}{A constant used in the calculation of shortwave radiation from Kext.}
+
+\item{year_to_plot}{Select the year of choice to plot.}
 }
 \value{
 A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET).
