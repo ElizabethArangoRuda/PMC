@@ -1,15 +1,18 @@
 #' Pryestly-Taylor Potential Evapotranspiration
 #'
-#' @param input.data A dataframe containing the columns 'Date', 'Tmin', 'Tmax', and 'PPT'.
-#' @param latitude The location in decimal degrees.
-#' @param alpha The Priestly-Taylor alpha constant.
-#' @param y The psychrometric constant in kPa/°C.
-#' @param Gsc The solar constant in MJ m^-2 min^-1.
-#' @param lambda The latent heat of vaporization in MJ m^-3.
-#' @param a A constant used in the calculation of shortwave radiation from Kext.
-#' @param b A constant used in the calculation of shortwave radiation from Kext.
+#' Computes PET using the Priestly-Taylor method.
+#'
+#' @param input_data A data frame that must include 'Date', 'Tmin', and 'Tmax'. Tavg is optional.
+#' @param latitude Latitude of the study site. **User-dependent**; must be specified for correct solar radiation calculations.
+#' @param alpha Priestly-Taylor coefficient. **User-dependent**; typically ranges from 1 to 1.26 depending on local conditions.
+#' @param y Psychrometric constant (kPa/°C). Default is 0.063. **User-dependent** in some models.
+#' @param Gsc Solar constant (MJ m\eqn{^{-2}} min\eqn{^{-1}}). Default is 0.0820.
+#' @param lambda Latent heat of vaporization of water (MJ g\eqn{^{-3}}). Default is 2453. If not specified by the user, it will be internally calculated based on temperature.
+#' @param a Constant in the Hargreaves calculation of Rn from extraterrestrial radiation (\eqn{K_\text{ext}}). Default is 0.17.
+#' @param b Constant in the Hargreaves calculation of net radiation (Rn) from extraterrestrial radiation (\eqn{K_\text{ext}}). Default is 0.59.
 #' @param year_to_plot Select the year of choice to plot.
-#' @returns A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET).
+#'
+#' @returns A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET) in centimeters.
 #' @export
 #'
 #' @examples
@@ -22,10 +25,10 @@
 #' y = 0.063,
 #' Gsc=0.0820,
 #' lambda=2453,
-#' a=0.11,
+#' a=0.17,
 #' b=0.59)
 #'
-Calculate_PET <- function(input.data,
+Calculate_PET <- function(input_data,
                            latitude,
                            alpha,
                            y,
@@ -36,40 +39,40 @@ Calculate_PET <- function(input.data,
                           year_to_plot=NULL
 ) {
 
-  # Check if either Tmean exists or both Tmin and Tmax exist
-  if (!"Tmean" %in% colnames(input.data) && (!"Tmin" %in% colnames(input.data) | !"Tmax" %in% colnames(input.data))) {
-    stop("At least 'Tmean' or both 'Tmin' and 'Tmax' columns are required to proceed with the PET calculation.")
+  # Check if either Tavg exists or both Tmin and Tmax exist
+  if (!"Tavg" %in% colnames(input_data) && (!"Tmin" %in% colnames(input_data) | !"Tmax" %in% colnames(input_data))) {
+    stop("At least 'Tavg' or both 'Tmin' and 'Tmax' columns are required to proceed with the PET calculation.")
   }
 
-  if ("latitude" %in% colnames(input.data)) {
-    latitude <- input.data$latitude
+  if ("latitude" %in% colnames(input_data)) {
+    latitude <- input_data$latitude
   }
 
-  if (!"Date" %in% colnames(input.data)) {
+  if (!"Date" %in% colnames(input_data)) {
     stop("The 'Date' column is missing in the input data.")
   }
 
-  # Check if meant temperature (Tmean) exists; if not, calculate it
-  if (!"Tmean" %in% colnames(input.data)) {
-    # If Tmean doesn't exist, calculate it from Tmin and Tmax
-    input.data <- dplyr::mutate(input.data, Tmean = (Tmin + Tmax) / 2)
+  # Check if meant temperature (Tavg) exists; if not, calculate it
+  if (!"Tavg" %in% colnames(input_data)) {
+    # If Tavg doesn't exist, calculate it from Tmin and Tmax
+    input_data <- dplyr::mutate(input_data, Tavg = (Tmin + Tmax) / 2)
 
   } else {
-    # If Tmean exists but has missing values, fill them
-    input.data <- dplyr::mutate(input.data,
-                                Tmean = ifelse(is.na(Tmean), (Tmin + Tmax) / 2, Tmean)
+    # If Tavg exists but has missing values, fill them
+    input_data <- dplyr::mutate(input_data,
+                                Tavg = ifelse(is.na(Tavg), (Tmin + Tmax) / 2, Tavg)
     )
   }
 
   # Convert latitude to radians
-  input.data <- dplyr::mutate(input.data,
+  input_data <- dplyr::mutate(input_data,
                               Date = as.Date(Date),
                               phi = latitude * pi / 180,  # Latitude in radians
                               Julian_Date = as.numeric(format(Date, "%j")),  # Extract day of the year
 
 
-                              # Conditional lambda calculation based on the presence of Tmean
-                              lambda = (2.501 - 0.00237 * Tmean)*1000, # Latent heat of vaporization (MJ/kg)
+                              # Conditional lambda calculation based on the presence of Tavg
+                              lambda = (2.501 - 0.00237 * Tavg)*1000, # Latent heat of vaporization (MJ/kg)
                               # Kext: Extra-terrestrial radiation
                               delta = 0.409 * sin((2 * pi / 365) * Julian_Date - 1.39), # Solar declination
                               ws = acos(-tan(phi) * tan(delta)), # Sunset hour angle
@@ -77,16 +80,16 @@ Calculate_PET <- function(input.data,
                               Kext =  ((24 * 60) / pi) * Gsc * dr * (ws * sin(phi) * sin(delta) + cos(phi) * cos(delta) * sin(ws))) #Extra terrestrial radiation
 
   # Check if Net Radiation (Rn) exist; if not, calculate it
-  if (!"Rn" %in% colnames(input.data)){
-    input.data <- dplyr::mutate(input.data,
+  if (!"Rn" %in% colnames(input_data)){
+    input_data <- dplyr::mutate(input_data,
                                 Sw = a * Kext * (Tmax - Tmin)^b, # MJ m^-2 day^-1,
                                 Rn= Sw*0.9
     )
   }
 
-  input.data <- dplyr::mutate(input.data,
+  input_data <- dplyr::mutate(input_data,
                               # Priestly-Taylor ET
-                              slope = 0.61365 * (17.502 / (240.97 + Tmean) - 17.502 * Tmean / ((240.97 + Tmean)^2)) * exp(17.502 * Tmean / (240.97 + Tmean)), # Slope of the saturation vapor pressure curve (kPa/°C)
+                              slope = 0.61365 * (17.502 / (240.97 + Tavg) - 17.502 * Tavg / ((240.97 + Tavg)^2)) * exp(17.502 * Tavg / (240.97 + Tavg)), # Slope of the saturation vapor pressure curve (kPa/°C)
                               PET_Calculated = alpha * (slope / ((slope + y) * lambda)) * Rn * 100) # Daily ET in mm/day
 
   # Visuals
@@ -95,8 +98,8 @@ Calculate_PET <- function(input.data,
     message(paste("Plotting data for year:", year_to_plot))
   }
 
-  start_year <- as.numeric(format(min(input.data$Date), "%Y"))
-  end_year <- as.numeric(format(max(input.data$Date), "%Y"))
+  start_year <- as.numeric(format(min(input_data$Date), "%Y"))
+  end_year <- as.numeric(format(max(input_data$Date), "%Y"))
   mid_dates <- seq.Date(
     from = as.Date(paste0(start_year, "-07-01")),
     to = as.Date(paste0(end_year, "-07-01")),
@@ -104,8 +107,9 @@ Calculate_PET <- function(input.data,
   )
 
 
+
   ## Plot daily ET
-  plot1 <- ggplot2::ggplot(input.data, ggplot2::aes(x=Date)) +
+  plot1 <- ggplot2::ggplot(input_data, ggplot2::aes(x=Date)) +
     ggplot2::geom_line(ggplot2::aes(y=PET_Calculated), color = "blue") +
     ggplot2::scale_x_date(
       name = "Date",
@@ -138,5 +142,11 @@ Calculate_PET <- function(input.data,
   # Print the plot to display automatically
   print(plot1)
 
-  return(input.data)
+  remove_col <- c('phi', 'Julian_Date', 'lambda', 'delta', 'ws', 'dr', 'Kext', 'Sw', 'Rn', 'slope')
+
+  # Only remove columns that exist in input_data
+  input_data <- dplyr::select(input_data, -dplyr::any_of(remove_col))
+
+
+  return(input_data)
 }

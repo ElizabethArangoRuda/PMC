@@ -11,14 +11,6 @@
 
 cleaning_data <- function(input_data) {
 
-  required_packages <- c("cowplot", "tidyverse", "readxl")
-
-  purrr::walk(required_packages, function(pkg){
-    if (!requireNamespace(pkg, quietly = TRUE)){
-      stop(paste("Error: Package", pkg, "is not installed. Please install it using install.packages('", pkg, "')"))
-    }
-  })
-
   # Validate input_data
 
   if (!is.data.frame(input_data)) {
@@ -52,8 +44,6 @@ cleaning_data <- function(input_data) {
     message("The 'PET' column is missing. You can calculate it using the 'Calculate_PET()' function.")
   }
 
-  message("Data processed successfully with ", nrow(input_data), " rows and ", ncol(input_data), " columns.")
-
   # Check for missing values (excluding Date column)
   missing_count <- sum(is.na(input_data[-which(names(input_data) == "Date")]))
   input_data <- dplyr::mutate(input_data, dplyr::across(.cols = -Date, as.numeric))
@@ -75,6 +65,9 @@ cleaning_data <- function(input_data) {
   } else {
     message("No missing values found.")
   }
+
+  message("Note: 'PPT' and 'PET' values must be in centimeters (cm). If your data is in millimeters (mm), please use the 'mm_to_cm()' function to convert it.")
+  message("Data processed successfully with ", nrow(input_data), " rows and ", ncol(input_data), " columns.")
 
   # Return the processed dataframe
   return(input_data)

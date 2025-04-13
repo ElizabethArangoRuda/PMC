@@ -8,7 +8,8 @@ Authors@R:
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: 
     The PMC incorporates peatland hydrological research to model the 
-    change in storage in the peatland water balance in a simple to use bookkeeping approach, akin to that used for the Drought Code and the Duff Moisture Code. 
+    change in storage in the peatland water balance in a simple to use bookkeeping approach, akin to that used for the Drought Code and the Duff Moisture Code.
+Roxygen: list(markdown = TRUE)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -18,7 +19,6 @@ RoxygenNote: 7.3.2
 Imports: 
     dplyr, 
     ggplot2,
-    purrr,
     scales,
     cowplot,
     lubridate,

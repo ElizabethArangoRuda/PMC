@@ -1,15 +1,17 @@
 #' Effective precipitation
 #'
-#' @param input_data A dataframe that contains columns 'Date', 'Tmin', 'Tmax', 'PPT'
-#' @param threshold A minimum amount of precipitation required before water reaches the peatland storage.
-#' @param column Precipitation variable in centimeters
+#' Effective precipitation represents the amount of water being added to the peatland system on a daily basis.
+#'
+#' @param input_data A dataframe that contains columns 'Date' and 'PPT' in centimeters.
+#' @param threshold A minimum amount of precipitation required before water reaches the peatland storage. **User-dependent**; default is 0.1 cm.
+#' @param column Daily summed precipitation variable in centimeters.
 #' @return A dataframe that includes both the original columns and the newly calculated effective precipitation values.
 #' @export
 #' @examples
 #' input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
 #' "2023-01-03")), Tmin = c(-36.1, -23.8, -25.6), Tmax = c(-27.0, -7.5, -12.4),
-#' PPT = c(0.0, 2.1, 0.1))
-#' effective_ppt(input_data, column = "PPT", threshold = 0.1)
+#' PPT_cm = c(0.0, 2.1, 0.1))
+#' effective_ppt(input_data, column = "PPT_cm", threshold = 0.1)
 
 effective_ppt <- function(input_data, column, threshold){
 
@@ -69,5 +71,6 @@ effective_ppt <- function(input_data, column, threshold){
 
   # Print the plot to display automatically
   print(plot1)
+  message("Effective precipitation was calculated using a threshold of ", threshold)
   return(input_data)
 }

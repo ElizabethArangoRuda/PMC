@@ -11,5 +11,8 @@
 #' mm_to_cm(input_data, columns = c("PPT"))
 mm_to_cm <- function(input_data, columns){
   input_data <- dplyr::mutate(input_data, dplyr::across(dplyr::all_of(columns), ~ . * 0.1, .names = "{.col}_cm"))
+  message("The following column(s) were successfully converted from millimeters to centimeters: ",
+          paste(columns, collapse = ", "))
+  message("Use mm_to_cm() function to convert PPT from mm to cm")
   return(input_data)
 }

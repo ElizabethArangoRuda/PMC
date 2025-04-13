@@ -5,7 +5,7 @@
 \title{Pryestly-Taylor Potential Evapotranspiration}
 \usage{
 Calculate_PET(
-  input.data,
+  input_data,
   latitude,
   alpha,
   y,
@@ -17,29 +17,29 @@ Calculate_PET(
 )
 }
 \arguments{
-\item{input.data}{A dataframe containing the columns 'Date', 'Tmin', 'Tmax', and 'PPT'.}
+\item{input_data}{A data frame that must include 'Date', 'Tmin', and 'Tmax'. Tavg is optional.}
 
-\item{latitude}{The location in decimal degrees.}
+\item{latitude}{Latitude of the study site. \strong{User-dependent}; must be specified for correct solar radiation calculations.}
 
-\item{alpha}{The Priestly-Taylor alpha constant.}
+\item{alpha}{Priestly-Taylor coefficient. \strong{User-dependent}; typically ranges from 1 to 1.26 depending on local conditions.}
 
-\item{y}{The psychrometric constant in kPa/°C.}
+\item{y}{Psychrometric constant (kPa/°C). Default is 0.063. \strong{User-dependent} in some models.}
 
-\item{Gsc}{The solar constant in MJ m^-2 min^-1.}
+\item{Gsc}{Solar constant (MJ m\eqn{^{-2}} min\eqn{^{-1}}). Default is 0.0820.}
 
-\item{lambda}{The latent heat of vaporization in MJ m^-3.}
+\item{lambda}{Latent heat of vaporization of water (MJ g\eqn{^{-3}}). Default is 2453. If not specified by the user, it will be internally calculated based on temperature.}
 
-\item{a}{A constant used in the calculation of shortwave radiation from Kext.}
+\item{a}{Constant in the Hargreaves calculation of Rn from extraterrestrial radiation (\eqn{K_\text{ext}}). Default is 0.17.}
 
-\item{b}{A constant used in the calculation of shortwave radiation from Kext.}
+\item{b}{Constant in the Hargreaves calculation of net radiation (Rn) from extraterrestrial radiation (\eqn{K_\text{ext}}). Default is 0.59.}
 
 \item{year_to_plot}{Select the year of choice to plot.}
 }
 \value{
-A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET).
+A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET) in centimeters.
 }
 \description{
-Pryestly-Taylor Potential Evapotranspiration
+Computes PET using the Priestly-Taylor method.
 }
 \examples{
 input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
@@ -51,7 +51,7 @@ alpha = 1,
 y = 0.063,
 Gsc=0.0820,
 lambda=2453,
-a=0.11,
+a=0.17,
 b=0.59)
 
 }
