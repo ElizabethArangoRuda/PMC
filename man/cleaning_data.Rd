@@ -2,7 +2,8 @@
 % Please edit documentation in R/cleaning_data.R
 \name{cleaning_data}
 \alias{cleaning_data}
-\title{Clean the initial dataframe}
+\title{This function is recommended to clean the initial dataframe ensuring it has
+the proper columns which are necessary for using the subsequent functions.}
 \usage{
 cleaning_data(input_data)
 }
@@ -13,7 +14,8 @@ cleaning_data(input_data)
 A dataframe with date columns of class Date, and the other variables as numeric
 }
 \description{
-Clean the initial dataframe
+This function is recommended to clean the initial dataframe ensuring it has
+the proper columns which are necessary for using the subsequent functions.
 }
 \examples{
 input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",

@@ -1,4 +1,5 @@
-#' Clean the initial dataframe
+#' This function is recommended to clean the initial dataframe ensuring it has
+#' the proper columns which are necessary for using the subsequent functions.
 #'
 #' @param input_data A dataframe that contains columns 'Date', 'Tmin', 'Tmax', 'PPT'
 #' @return A dataframe with date columns of class Date, and the other variables as numeric
