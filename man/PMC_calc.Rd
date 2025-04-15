@@ -2,12 +2,12 @@
 % Please edit documentation in R/PMC_calc.R
 \name{PMC_calc}
 \alias{PMC_calc}
-\title{PMC Calculation uses}
+\title{The Peat Moisture Code (PMC)}
 \usage{
 PMC_calc(input_data, PET_column, A, B, start_PMC, C, Sy_min, PMC_min)
 }
 \arguments{
-\item{input_data}{A dataframe containing the columns 'Date', 'PET_cm', and 'eff_Precip_cm'.}
+\item{input_data}{Default dataset to use for PMC calculation. It must contain the columns 'Date', 'PET_cm', and 'eff_Precip_cm'.}
 
 \item{PET_column}{A PET column is necessary for calculating PCM. The required unit of measurement is centimeters.}
 
@@ -27,7 +27,10 @@ PMC_calc(input_data, PET_column, A, B, start_PMC, C, Sy_min, PMC_min)
 A dataframe that retains the original columns and adds a column with the calculated PMC.
 }
 \description{
-The Peat Moisture Code (PMC) is calculated using a bookkeeping method that integrates precipitation and evapotranspiration, allowing for continuous simulation of peatland moisture dynamics. PMC is calculated as follows:
+The Peat Moisture Code (PMC) is calculated using a bookkeeping method that integrates precipitation and evapotranspiration, allowing for continuous simulation of peatland moisture dynamics.
+}
+\details{
+PMC is calculated as follows:
 \deqn{PMC_i = PMC_{i-1} + \frac{AET_i - EffPrecip_i}{Sy}}{PMC[i] = PMC[i-1] + ((AET[i] - EffPrecip[i]) / Sy)}
 Where:
 \itemize{
@@ -35,17 +38,16 @@ Where:
 \item \eqn{PMC_{i-1}} is the PMC from the previous day (or the start-up PMC value if \eqn{i = 1}),
 \item \eqn{AET_i} is the actual evapotranspiration on day \eqn{i},
 \item \eqn{EffPrecip_i} is the effective precipitation on day \eqn{i},
-\item \eqn{Sy} is the soil moisture recharge coefficient, calculated based on \eqn{PMC_{i-1}}.
+\item \eqn{Sy} is the specific yield, calculated based on \eqn{PMC_{i-1}}.
 }
-}
-\details{
-The specific yield (Sy) is calculated using an exponential decay function:
 
-\deqn{Sy = A \cdot \exp(-B \cdot PMC_{i-1})}{Sy = A * exp(-B * PMC[i - 1])}
-
+In peatland hydrology, Specific Yield (Sy) is the ratio of water table movement due to the addition or removal of water in the system. The values range between 0 and 1.
 A minimum value of \eqn{Sy = 0.1} (denoted as \code{Sy_min}) is enforced to prevent unrealistically large changes in storage at high PMC values. Additionally, a maximum multiplier of 10 is applied to avoid excessive recharge.
 
-This formulation ensures that Sy decreases with increasing peat moisture content, representing the reduced ability of dry peat to retain additional water. The imposed limits maintain numerical stability and physical realism in the simulation.
+The specific yield (Sy) is calculated using an exponential decay function:
+\deqn{Sy = A \cdot \exp(-B \cdot PMC_{i-1})}{Sy = A * exp(-B * PMC[i - 1])}
+
+The exponential function can be calculated using any other set of peat samples. Thus, it could theoretically be calibrated to a particular region or peatland.
 }
 \examples{
 input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",

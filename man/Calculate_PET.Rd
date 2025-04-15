@@ -39,7 +39,25 @@ Calculate_PET(
 A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET) in centimeters.
 }
 \description{
-Computes PET using the Priestly-Taylor method.
+The Priestley-Taylor (PT) equation simplifies the Penman-Monteith method by combining the vapor deficit and convection terms into a single empirical constant, α.
+}
+\details{
+PET is calculated as follows:
+
+\deqn{ET_{pt} = \alpha \cdot \frac{\Delta \cdot R_n}{\lambda_v \cdot (\Delta + \gamma)} \cdot 100}{
+ETpt = α * [Δ * Rn] / [λv * (Δ + γ)] * 100
+}
+
+Where:
+\itemize{
+\item \eqn{\alpha}{α} is the Priestley–Taylor coefficient (typically ~1),
+\item \eqn{\Delta}{Δ} is the slope of the saturation vapor pressure curve (kPa/°C),
+\item \eqn{R_n} is the net radiation (MJ/m²/day),
+\item \eqn{\lambda_v}{λv} is the latent heat of vaporization (kJ/kg),
+\item \eqn{\gamma} is the psychrometric constant (kPa/°C).
+}
+
+The result is returned in centimeters (cm) per day.
 }
 \examples{
 input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",

@@ -1,6 +1,23 @@
 #' Pryestly-Taylor Potential Evapotranspiration
 #'
-#' Computes PET using the Priestly-Taylor method.
+#' The Priestley-Taylor (PT) equation simplifies the Penman-Monteith method by combining the vapor deficit and convection terms into a single empirical constant, α.
+#'
+#' PET is calculated as follows:
+#'
+#' \deqn{ET_{pt} = \alpha \cdot \frac{\Delta \cdot R_n}{\lambda_v \cdot (\Delta + \gamma)} \cdot 100}{
+#' ETpt = α * [Δ * Rn] / [λv * (Δ + γ)] * 100
+#' }
+#'
+#' Where:
+#' \itemize{
+#'   \item \eqn{\alpha}{α} is the Priestley–Taylor coefficient (typically ~1),
+#'   \item \eqn{\Delta}{Δ} is the slope of the saturation vapor pressure curve (kPa/°C),
+#'   \item \eqn{R_n} is the net radiation (MJ/m²/day),
+#'   \item \eqn{\lambda_v}{λv} is the latent heat of vaporization (kJ/kg),
+#'   \item \eqn{\gamma} is the psychrometric constant (kPa/°C).
+#' }
+#'
+#' The result is returned in centimeters (cm) per day.
 #'
 #' @param input_data A data frame that must include 'Date', 'Tmin', and 'Tmax'. Tavg is optional.
 #' @param latitude Latitude of the study site. **User-dependent**; must be specified for correct solar radiation calculations.
@@ -90,7 +107,7 @@ Calculate_PET <- function(input_data,
   input_data <- dplyr::mutate(input_data,
                               # Priestly-Taylor ET
                               slope = 0.61365 * (17.502 / (240.97 + Tavg) - 17.502 * Tavg / ((240.97 + Tavg)^2)) * exp(17.502 * Tavg / (240.97 + Tavg)), # Slope of the saturation vapor pressure curve (kPa/°C)
-                              PET_Calculated = alpha * (slope / ((slope + y) * lambda)) * Rn * 100) # Daily ET in mm/day
+                              PET_Calculated = alpha * (slope / ((slope + y) * lambda)) * Rn * 100) # Daily ET in cm/day
 
   # Visuals
   if (!is.null(year_to_plot)){
