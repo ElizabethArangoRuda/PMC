@@ -172,7 +172,7 @@ Calculate_PET <- function(input_data,
   # Only remove columns that exist in input_data
   input_data <- dplyr::select(input_data, -dplyr::any_of(remove_col))
 
-  message("PET calculation completed successfully. You may now proceed with PMC estimation using the `PMC_calc()` function.")
+  message("PET calculation completed successfully. You may now proceed with PMC estimation using the `PMC()` function.")
 
   return(input_data)
 }

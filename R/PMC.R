@@ -40,7 +40,7 @@
 #'   eff_Precip_cm = c(0.0, 0.21, 0.01),
 #'   PET_Calculated = c(0.0034, 0.0154, 0.0111)
 #' )
-#' PMC_calc(input_data,
+#' PMC(input_data,
 #'          PET_column = "PET_Calculated",
 #'          A = 0.8674,
 #'          B = 0.0540,
@@ -49,7 +49,7 @@
 #'          Sy_min = 0.1,
 #'          PMC_min = -5)
 
-PMC_calc <- function(input_data,
+PMC <- function(input_data,
                      PET_column,
                      A,
                      B,
