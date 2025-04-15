@@ -1,32 +1,40 @@
-#' Plots of selected parameters
+#' Multi-panel Plot of Selected Variables
 #'
-#' @param input_data A dataframe containing the variables to be plotted.
-#' @param var1 The variable to be plotted in the first panel.
-#' @param var2 The variable to be plotted in the second panel.
-#' @param var3 The variable to be plotted in the third panel.
-#' @param var4 The variable to be plotted in the fourth panel.
+#' This function creates a four-panel plot to visualize temporal trends in selected variables from a given dataset.
+#' It is useful for comparing key hydrometeorological and modeled parameters over time.
+#'
+#' @param input_data A dataframe containing a 'Date' column and the variables to be plotted.
+#' @param var1 The name of the variable to be plotted in the first panel (as a string).
+#' @param var2 The name of the variable to be plotted in the second panel (as a string).
+#' @param var3 The name of the variable to be plotted in the third panel (as a string).
+#' @param var4 The name of the variable to be plotted in the fourth panel (as a string).
 #' @param x_label_vr1 The y-axis label for the first variable.
 #' @param x_label_vr2 The y-axis label for the second variable.
 #' @param x_label_vr3 The y-axis label for the third variable.
 #' @param x_label_vr4 The y-axis label for the fourth variable.
 #'
-#' @return An arrangement of multiple plots as a single, combined figure.
+#' @return A combined figure containing four ggplot2 panels arranged vertically, each showing the time series of one variable.
 #' @export
 #'
 #' @examples
-#' input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
-#' "2023-01-03")), PET_Calculated = c(0.003444420, 0.015362293, 0.011119636),
-#' Tmean = c(-31.55, -15.65, -19.00), PMC = c(10.005600, 9.686799, 9.688504),
-#' eff_Precip_cm = c(0.00, 0.21, 0.01))
-#' visuals(input_data,
-#' var1="PET_Calculated",
-#' var2="Tmean",
-#' var3="PMC",
-#' var4="eff_Precip_cm",
-#' x_label_vr1 = "PET (cm)",
-#' x_label_vr2 = "Tair (°C)",
-#' x_label_vr3 = "PMC",
-#' x_label_vr4 = "Eff PPT")
+#' input_data <- data.frame(
+#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+#'   PET_Calculated = c(0.0034, 0.0154, 0.0111),
+#'   Tmean = c(-31.55, -15.65, -19.00),
+#'   PMC = c(10.01, 9.69, 9.69),
+#'   eff_Precip_cm = c(0.00, 0.21, 0.01)
+#' )
+#' visuals(
+#'   input_data,
+#'   var1 = "PET_Calculated",
+#'   var2 = "Tavg",
+#'   var3 = "PMC",
+#'   var4 = "eff_Precip_cm",
+#'   x_label_vr1 = "PET (cm)",
+#'   x_label_vr2 = "Tair (°C)",
+#'   x_label_vr3 = "PMC",
+#'   x_label_vr4 = "Effective Precipitation (cm)"
+#' )
 visuals <- function(input_data, var1, var2, var3, var4,
                     x_label_vr1,
                     x_label_vr2,
@@ -142,12 +150,13 @@ visuals <- function(input_data, var1, var2, var3, var4,
                                 #limits = c(0, 100),
                                 #breaks = seq(0, 100, by = 20),
                                 expand = c(0.004, 0.004)) +
-    ggplot2::labs(title="d")+
+    ggplot2::labs(title="c")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
       axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
       axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
+      axis.title.y = ggplot2::element_text(size = 18, colour = "black", vjust = 4),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),
       legend.title = ggplot2::element_blank(),
@@ -155,7 +164,6 @@ visuals <- function(input_data, var1, var2, var3, var4,
       legend.key.size = ggplot2::unit(0.8, "cm"),
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
-      axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
       plot.title = ggplot2::element_text(hjust = 0.01, vjust = -5, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )

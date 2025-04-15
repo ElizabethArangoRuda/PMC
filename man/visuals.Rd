@@ -2,7 +2,7 @@
 % Please edit documentation in R/visuals.R
 \name{visuals}
 \alias{visuals}
-\title{Plots of selected parameters}
+\title{Multi-panel Plot of Selected Variables}
 \usage{
 visuals(
   input_data,
@@ -17,15 +17,15 @@ visuals(
 )
 }
 \arguments{
-\item{input_data}{A dataframe containing the variables to be plotted.}
+\item{input_data}{A dataframe containing a 'Date' column and the variables to be plotted.}
 
-\item{var1}{The variable to be plotted in the first panel.}
+\item{var1}{The name of the variable to be plotted in the first panel (as a string).}
 
-\item{var2}{The variable to be plotted in the second panel.}
+\item{var2}{The name of the variable to be plotted in the second panel (as a string).}
 
-\item{var3}{The variable to be plotted in the third panel.}
+\item{var3}{The name of the variable to be plotted in the third panel (as a string).}
 
-\item{var4}{The variable to be plotted in the fourth panel.}
+\item{var4}{The name of the variable to be plotted in the fourth panel (as a string).}
 
 \item{x_label_vr1}{The y-axis label for the first variable.}
 
@@ -36,23 +36,29 @@ visuals(
 \item{x_label_vr4}{The y-axis label for the fourth variable.}
 }
 \value{
-An arrangement of multiple plots as a single, combined figure.
+A combined figure containing four ggplot2 panels arranged vertically, each showing the time series of one variable.
 }
 \description{
-Plots of selected parameters
+This function creates a four-panel plot to visualize temporal trends in selected variables from a given dataset.
+It is useful for comparing key hydrometeorological and modeled parameters over time.
 }
 \examples{
-input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
-"2023-01-03")), PET_Calculated = c(0.003444420, 0.015362293, 0.011119636),
-Tmean = c(-31.55, -15.65, -19.00), PMC = c(10.005600, 9.686799, 9.688504),
-eff_Precip_cm = c(0.00, 0.21, 0.01))
-visuals(input_data,
-var1="PET_Calculated",
-var2="Tmean",
-var3="PMC",
-var4="eff_Precip_cm",
-x_label_vr1 = "PET (cm)",
-x_label_vr2 = "Tair (°C)",
-x_label_vr3 = "PMC",
-x_label_vr4 = "Eff PPT")
+input_data <- data.frame(
+  Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+  PET_Calculated = c(0.0034, 0.0154, 0.0111),
+  Tmean = c(-31.55, -15.65, -19.00),
+  PMC = c(10.01, 9.69, 9.69),
+  eff_Precip_cm = c(0.00, 0.21, 0.01)
+)
+visuals(
+  input_data,
+  var1 = "PET_Calculated",
+  var2 = "Tavg",
+  var3 = "PMC",
+  var4 = "eff_Precip_cm",
+  x_label_vr1 = "PET (cm)",
+  x_label_vr2 = "Tair (°C)",
+  x_label_vr3 = "PMC",
+  x_label_vr4 = "Effective Precipitation (cm)"
+)
 }
