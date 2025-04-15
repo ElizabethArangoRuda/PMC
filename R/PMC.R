@@ -172,7 +172,7 @@ PMC <- function(input_data,
 
   print(plot)
 
-  message("PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI_cal() function.")
+  message("PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI() function.")
   # Return the processed data
   return(input_data)
 }

@@ -17,8 +17,8 @@
 #'   PMC = c(10.005600, 9.686799, 9.688504),
 #'   ISI = c(0.2, 0.1, 0.1)
 #' )
-#' PMCISI_calc(input_data, year_to_plot = "2014")
-PMCISI_calc <- function(input_data, year_to_plot=NULL){
+#' PMCISI(input_data, year_to_plot = "2014")
+PMCISI <- function(input_data, year_to_plot=NULL){
 
   input_data <- dplyr::mutate(input_data,
                               PMC_ISI = PMC*ISI,

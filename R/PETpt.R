@@ -43,7 +43,7 @@
 #'   Tmax = c(-27.0, -7.5, -12.4)
 #' )
 #'
-#' PET_pt(
+#' PETpt(
 #'   input_data,
 #'   latitude = 56.9002499,
 #'   alpha = 1,
@@ -53,7 +53,7 @@
 #'   a = 0.17,
 #'   b = 0.59
 #' )
-PET_pt <- function(input_data,
+PETpt <- function(input_data,
                            latitude,
                            alpha,
                            y,
