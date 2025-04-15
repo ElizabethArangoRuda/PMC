@@ -1,15 +1,34 @@
-#' This function is recommended to clean the initial dataframe ensuring it has
-#' the proper columns which are necessary for using the subsequent functions.
+#' Clean and Validate Input Data
 #'
-#' @param input_data A dataframe that contains columns 'Date', 'Tmin', 'Tmax', 'PPT'
-#' @return A dataframe with date columns of class Date, and the other variables as numeric
-#' @export
+#' This function prepares and validates the initial input dataset by ensuring it contains the necessary columns and correct data types. It is recommended to run this function before using any other functions in the package to ensure consistent formatting.
+#'
+#' @param input_data A data frame that must include the following columns: \code{Date}, \code{Tmin}, \code{Tmax}, and \code{PPT}.
+#'
+#' @return A cleaned data frame with:
+#' \itemize{
+#'   \item \code{Date} converted to class \code{Date} (if not already),
+#'   \item all other columns converted to numeric,
+#'   \item optional message if required columns (e.g., \code{PET}) are missing.
+#' }
+#'
+#' @details
+#' This function verifies that all required columns are present and that data types are correctly formatted. Specifically, it ensures the \code{Date} column is of class \code{Date}, and converts all other columns to numeric as needed. Any additional columns in the input data frame will be preserved unless otherwise specified.
+#'
+#' If the \code{PET} column is missing, a message will notify the user that it can be calculated using the \code{Calculate_PET()} function.
+#'
+#' If missing values are detected in the dataset, the function will prompt the user and, if approved, interpolate them using the \code{na.approx()} function from the \code{zoo} package.
+#'
 #' @examples
-#' input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
-#' "2023-01-03")), Tmin = c(-36.1, -23.8, -25.6), Tmax = c(-27.0, -7.5, -12.4),
-#' PPT = c(0.0, 2.1, 0.1), ISI = c(1.1, 1.2, 1.5))
+#' input_data <- data.frame(
+#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+#'   Tmin = c(-36.1, -23.8, -25.6),
+#'   Tmax = c(-27.0, -7.5, -12.4),
+#'   PPT = c(0.0, 2.1, 0.1),
+#'   ISI = c(1.1, 1.2, 1.5)
+#' )
 #' cleaning_data(input_data)
-
+#'
+#' @export
 cleaning_data <- function(input_data) {
 
   # Validate input_data

@@ -2,25 +2,29 @@
 % Please edit documentation in R/PMCISI_calc.R
 \name{PMCISI_calc}
 \alias{PMCISI_calc}
-\title{Peat Spread Rate Index}
+\title{Peat Spread Rate Index (PMC_ISI)}
 \usage{
 PMCISI_calc(input_data, year_to_plot = NULL)
 }
 \arguments{
-\item{input_data}{A dataframe containing the columns 'Date', 'PMC' and 'ISI'.}
+\item{input_data}{A dataframe that must include the columns \code{Date}, \code{PMC}, and \code{ISI}.}
 
-\item{year_to_plot}{The year to plot.}
+\item{year_to_plot}{Optional. Specify a year (as a string or numeric) to generate a plot of PMC_ISI values for that year.}
 }
 \value{
-A dataframe that retains the original columns and adds a column with the calculated PMC_ISI.
+A dataframe containing all original columns along with a new column \code{PMC_ISI}, representing the calculated peat spread index.
+If \code{year_to_plot} is provided, a plot will be generated for visual interpretation.
 }
 \description{
-The PMCISI combines the ISI and PMC to provide a representation of
-above-ground fire spread potential in peatland fuels.
+The Peat Spread Rate Index (PMC_ISI) integrates the Peat Moisture Code (PMC) and the Initial Spread Index (ISI)
+to estimate the potential for above-ground fire spread in peatland environments. This combined index provides
+a more representative measure of fire risk in peat fuels by accounting for both moisture conditions and surface fire behavior.
 }
 \examples{
-input_data <- data.frame(Date = as.Date(c("2014-01-01", "2014-01-02",
-"2014-01-03")) , PMC = c(10.005600, 9.686799, 9.688504),
-ISI = c(0.2, 0.1, 0.1))
+input_data <- data.frame(
+  Date = as.Date(c("2014-01-01", "2014-01-02", "2014-01-03")),
+  PMC = c(10.005600, 9.686799, 9.688504),
+  ISI = c(0.2, 0.1, 0.1)
+)
 PMCISI_calc(input_data, year_to_plot = "2014")
 }

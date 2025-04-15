@@ -2,24 +2,30 @@
 % Please edit documentation in R/mm_to_cm.R
 \name{mm_to_cm}
 \alias{mm_to_cm}
-\title{Function to convert a variable from millimeters (mm) to centimeters (cm)}
+\title{Convert Millimeters to Centimeters}
 \usage{
 mm_to_cm(input_data, columns)
 }
 \arguments{
-\item{input_data}{A dataframe that contains columns 'Date', 'Tmin', 'Tmax', 'PPT'}
+\item{input_data}{A dataframe that includes at least a 'Date' column and one or more numeric columns (e.g., 'PPT', 'PET').}
 
-\item{columns}{Selected column by the user such as 'PET' and/or 'PPT'.}
+\item{columns}{A character vector indicating which column(s) to convert from mm to cm (e.g., \code{c("PPT", "PET")}).}
 }
 \value{
-A dataframe with original columns, except for the selected columns converted to centimeters.
+A dataframe containing all original columns, with the specified column(s) converted to centimeters and renamed with a \code{_cm} suffix.
 }
 \description{
-Function to convert a variable from millimeters (mm) to centimeters (cm)
+This function converts specified variables in a dataframe from millimeters (mm) to centimeters (cm) by multiplying the values by 0.1.
+}
+\details{
+This function preserves all columns in the original dataframe. The converted columns are added as new columns with names in the format \code{originalname_cm}.
 }
 \examples{
-input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
-"2023-01-03")), Tmin = c(-36.1, -23.8, -25.6), Tmax = c(-27.0, -7.5, -12.4),
-PPT = c(0.0, 2.1, 0.1))
+input_data <- data.frame(
+  Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+  Tmin = c(-36.1, -23.8, -25.6),
+  Tmax = c(-27.0, -7.5, -12.4),
+  PPT = c(0.0, 2.1, 0.1)
+)
 mm_to_cm(input_data, columns = c("PPT"))
 }

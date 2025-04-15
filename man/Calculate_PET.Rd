@@ -2,7 +2,7 @@
 % Please edit documentation in R/Calculate_PET.R
 \name{Calculate_PET}
 \alias{Calculate_PET}
-\title{Pryestly-Taylor Potential Evapotranspiration}
+\title{Priestley–Taylor Potential Evapotranspiration (PET)}
 \usage{
 Calculate_PET(
   input_data,
@@ -17,59 +17,66 @@ Calculate_PET(
 )
 }
 \arguments{
-\item{input_data}{A data frame that must include 'Date', 'Tmin', and 'Tmax'. Tavg is optional.}
+\item{input_data}{A data frame containing at least the following columns: \code{Date}, \code{Tmin}, and \code{Tmax}. The optional \code{Tavg} column will be calculated if not provided.}
 
-\item{latitude}{Latitude of the study site. \strong{User-dependent}; must be specified for correct solar radiation calculations.}
+\item{latitude}{Numeric. Latitude of the study location in decimal degrees. \strong{User-dependent} and essential for calculating extraterrestrial radiation.}
 
-\item{alpha}{Priestly-Taylor coefficient. \strong{User-dependent}; typically ranges from 1 to 1.26 depending on local conditions.}
+\item{alpha}{Numeric. Priestley–Taylor coefficient. \strong{User-dependent}; typically ranges from 1.0 to 1.26 depending on surface conditions. Default is 1.}
 
-\item{y}{Psychrometric constant (kPa/°C). Default is 0.063. \strong{User-dependent} in some models.}
+\item{y}{Numeric. Psychrometric constant (kPa/°C). Default is 0.063. This parameter may vary depending on elevation and air pressure conditions.}
 
-\item{Gsc}{Solar constant (MJ m\eqn{^{-2}} min\eqn{^{-1}}). Default is 0.0820.}
+\item{Gsc}{Numeric. Solar constant (MJ m\eqn{^{-2}} min\eqn{^{-1}}). Default is 0.0820.}
 
-\item{lambda}{Latent heat of vaporization of water (MJ g\eqn{^{-3}}). Default is 2453. If not specified by the user, it will be internally calculated based on temperature.}
+\item{lambda}{Numeric. Latent heat of vaporization (MJ/kg). Default is 2453. If not provided, it will be internally estimated based on mean air temperature.}
 
-\item{a}{Constant in the Hargreaves calculation of Rn from extraterrestrial radiation (\eqn{K_\text{ext}}). Default is 0.17.}
+\item{a}{Numeric. Empirical coefficient for calculating net radiation from extraterrestrial radiation. Default is 0.17.}
 
-\item{b}{Constant in the Hargreaves calculation of net radiation (Rn) from extraterrestrial radiation (\eqn{K_\text{ext}}). Default is 0.59.}
+\item{b}{Numeric. Empirical coefficient for net radiation estimation. Default is 0.59.}
 
-\item{year_to_plot}{Select the year of choice to plot.}
+\item{year_to_plot}{Optional. Numeric value indicating the year to display in a generated plot of daily PET.}
 }
 \value{
-A dataframe that retains the original columns and adds a column with the calculated Potential Evapotranspiration (PET) in centimeters.
+A data frame with the original columns plus a new column \code{PET_Calculated}, representing daily potential evapotranspiration in centimeters (cm).
 }
 \description{
-The Priestley-Taylor (PT) equation simplifies the Penman-Monteith method by combining the vapor deficit and convection terms into a single empirical constant, α.
+This function estimates daily potential evapotranspiration (PET) using the Priestley–Taylor (PT) method, a simplified
+alternative to the Penman-Monteith equation. The PT method combines radiation and temperature-based components into a
+single formulation using an empirical coefficient, \eqn{\alpha}{α}.
 }
 \details{
-PET is calculated as follows:
+PET is computed as:
 
-\deqn{ET_{pt} = \alpha \cdot \frac{\Delta \cdot R_n}{\lambda_v \cdot (\Delta + \gamma)} \cdot 100}{
-ETpt = α * [Δ * Rn] / [λv * (Δ + γ)] * 100
+\deqn{ET_{pt} = \alpha \cdot \frac{\Delta \cdot (R_n - G)}{\lambda_v \cdot (\Delta + \gamma)} \cdot 100}{
+ETpt = α * [Δ * (Rn - G)] / [λv * (Δ + γ)] * 100
 }
 
 Where:
 \itemize{
-\item \eqn{\alpha}{α} is the Priestley–Taylor coefficient (typically ~1),
+\item \eqn{\alpha}{α} is the Priestley–Taylor coefficient (dimensionless),
 \item \eqn{\Delta}{Δ} is the slope of the saturation vapor pressure curve (kPa/°C),
 \item \eqn{R_n} is the net radiation (MJ/m²/day),
-\item \eqn{\lambda_v}{λv} is the latent heat of vaporization (kJ/kg),
+\item \eqn{G} is the soil heat flux, which is assumed to be negligible in daily time steps,
+\item \eqn{\lambda_v}{λv} is the latent heat of vaporization (MJ/kg),
 \item \eqn{\gamma} is the psychrometric constant (kPa/°C).
 }
 
-The result is returned in centimeters (cm) per day.
+The resulting PET values are expressed in centimeters (cm) per day.
 }
 \examples{
-input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
-"2023-01-03")), Tmin = c(-36.1, -23.8, -25.6), Tmax = c(-27.0, -7.5, -12.4),
-PPT = c(0.0, 2.1, 0.1))
-Calculate_PET(input_data,
-latitude = 56.9002499,
-alpha = 1,
-y = 0.063,
-Gsc=0.0820,
-lambda=2453,
-a=0.17,
-b=0.59)
+input_data <- data.frame(
+  Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+  Tmin = c(-36.1, -23.8, -25.6),
+  Tmax = c(-27.0, -7.5, -12.4)
+)
 
+Calculate_PET(
+  input_data,
+  latitude = 56.9002499,
+  alpha = 1,
+  y = 0.063,
+  Gsc = 0.0820,
+  lambda = 2453,
+  a = 0.17,
+  b = 0.59
+)
 }

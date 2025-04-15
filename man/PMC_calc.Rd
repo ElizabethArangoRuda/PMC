@@ -2,62 +2,65 @@
 % Please edit documentation in R/PMC_calc.R
 \name{PMC_calc}
 \alias{PMC_calc}
-\title{The Peat Moisture Code (PMC)}
+\title{Peat Moisture Code (PMC)}
 \usage{
 PMC_calc(input_data, PET_column, A, B, start_PMC, C, Sy_min, PMC_min)
 }
 \arguments{
-\item{input_data}{Default dataset to use for PMC calculation. It must contain the columns 'Date', 'PET_cm', and 'eff_Precip_cm'.}
+\item{input_data}{A data frame that includes at least 'Date', the selected PET column (in cm), and 'eff_Precip_cm'.}
 
-\item{PET_column}{A PET column is necessary for calculating PCM. The required unit of measurement is centimeters.}
+\item{PET_column}{Name of the column containing daily potential evapotranspiration values (in centimeters).}
 
-\item{A}{Parameter derived from fitting an exponential curve between Specific Yield and Depth Below Ground (measured in cm) using samples collected from bogs and treed poor fens in boreal Alberta. Default is 0.8674.}
+\item{A}{Parameter from the exponential Sy-depth relationship. Default is 0.8674.}
 
-\item{B}{Parameter derived from fitting an exponential curve between Specific Yield and Depth Below Ground (measured in cm) using samples collected from bogs and treed poor fens in boreal Alberta. Default is 0.0540.}
+\item{B}{Parameter from the exponential Sy-depth relationship. Default is 0.0540.}
 
-\item{start_PMC}{A parameter to establish the initial value for the water table depth in centimeters.}
+\item{start_PMC}{Initial PMC value (i.e., initial water table depth in cm).}
 
-\item{C}{Limited to a minimum of 0.3 to account for ET from trees}
+\item{C}{Lower limit for PET, constrained to a minimum of 0.3 to account for evapotranspiration from trees.}
 
-\item{Sy_min}{Minimum Specific Yield (Sy). Default is 0.1.}
+\item{Sy_min}{Minimum allowable specific yield. Default is 0.1.}
 
-\item{PMC_min}{Minimum PMC value}
+\item{PMC_min}{Minimum allowable PMC value to cap extreme low estimates. Optional.}
 }
 \value{
-A dataframe that retains the original columns and adds a column with the calculated PMC.
+A data frame that retains the original input columns and adds a new column with the calculated PMC values.
 }
 \description{
-The Peat Moisture Code (PMC) is calculated using a bookkeeping method that integrates precipitation and evapotranspiration, allowing for continuous simulation of peatland moisture dynamics.
+The Peat Moisture Code (PMC) is calculated using a daily bookkeeping approach that integrates actual evapotranspiration and effective precipitation to simulate peatland moisture dynamics over time.
 }
 \details{
-PMC is calculated as follows:
+PMC is calculated using the following formula:
 \deqn{PMC_i = PMC_{i-1} + \frac{AET_i - EffPrecip_i}{Sy}}{PMC[i] = PMC[i-1] + ((AET[i] - EffPrecip[i]) / Sy)}
+
 Where:
 \itemize{
 \item \eqn{PMC_i} is the PMC value on day \eqn{i},
-\item \eqn{PMC_{i-1}} is the PMC from the previous day (or the start-up PMC value if \eqn{i = 1}),
-\item \eqn{AET_i} is the actual evapotranspiration on day \eqn{i},
-\item \eqn{EffPrecip_i} is the effective precipitation on day \eqn{i},
-\item \eqn{Sy} is the specific yield, calculated based on \eqn{PMC_{i-1}}.
+\item \eqn{PMC_{i-1}} is the PMC of the previous day (or the initial start-up value if \eqn{i = 1}),
+\item \eqn{AET_i} is actual evapotranspiration (cm) on day \eqn{i},
+\item \eqn{EffPrecip_i} is effective precipitation (cm) on day \eqn{i},
+\item \eqn{Sy} is the specific yield, dynamically calculated based on \eqn{PMC_{i-1}}.
 }
 
-In peatland hydrology, Specific Yield (Sy) is the ratio of water table movement due to the addition or removal of water in the system. The values range between 0 and 1.
-A minimum value of \eqn{Sy = 0.1} (denoted as \code{Sy_min}) is enforced to prevent unrealistically large changes in storage at high PMC values. Additionally, a maximum multiplier of 10 is applied to avoid excessive recharge.
-
-The specific yield (Sy) is calculated using an exponential decay function:
+Specific yield (\eqn{Sy}) represents the ratio of water table change due to water input or loss in the peat system. It ranges between 0 and 1 and is modeled using an exponential decay function:
 \deqn{Sy = A \cdot \exp(-B \cdot PMC_{i-1})}{Sy = A * exp(-B * PMC[i - 1])}
 
-The exponential function can be calculated using any other set of peat samples. Thus, it could theoretically be calibrated to a particular region or peatland.
+To prevent unrealistic changes in storage, a minimum \code{Sy} value of 0.1 is enforced. A maximum multiplier of 10 is also applied to avoid overestimation of recharge.
+
+The parameters \code{A=0.8674} and \code{B=0.0540} are derived from an exponential fit between specific yield and depth below ground (in cm) using field data from bogs and treed poor fens in boreal Alberta. These can be modified to calibrate the model to specific regions or peatland types.
 }
 \examples{
-input_data <- data.frame(Date = as.Date(c("2024-01-01", "2024-01-02",
-"2023-01-03")), eff_Precip_cm = c(0.0, 0.21, 0.01), PET_Calculated =
-c(0.003444420, 0.015362293, 0.011119636))
-PMC_calc(input_data, PET_column = "PET_Calculated",
-A = 0.8674,
-B = 0.0540,
-start_PMC = 10,
-C = 0.1,
-Sy_min = 0.1,
-PMC_min = -5)
+input_data <- data.frame(
+  Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+  eff_Precip_cm = c(0.0, 0.21, 0.01),
+  PET_Calculated = c(0.0034, 0.0154, 0.0111)
+)
+PMC_calc(input_data,
+         PET_column = "PET_Calculated",
+         A = 0.8674,
+         B = 0.0540,
+         start_PMC = 10,
+         C = 0.1,
+         Sy_min = 0.1,
+         PMC_min = -5)
 }
