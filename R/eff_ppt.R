@@ -64,8 +64,8 @@ eff_ppt <- function(input_data, column, threshold){
                        expand = c(0.004, 0.004)) +
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 14, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 14, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),
@@ -74,7 +74,7 @@ eff_ppt <- function(input_data, column, threshold){
       legend.key.size = ggplot2::unit(0.8, "cm"),
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
-      axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.title.y = ggplot2::element_text(size = 14, colour = "black"),
       plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )
@@ -82,6 +82,6 @@ eff_ppt <- function(input_data, column, threshold){
   # Print the plot to display automatically
   print(plot1)
   message("Effective precipitation was calculated using a threshold of ", threshold)
-  message("You can now compute potential evapotranspiration using the `PET()` function.")
+  message("You can now compute potential evapotranspiration using the `PETpt()` function.")
   return(input_data)
 }

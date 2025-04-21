@@ -108,7 +108,7 @@ PETpt <- function(input_data,
   if (!"Rn" %in% colnames(input_data)){
     input_data <- dplyr::mutate(input_data,
                                 Sw = a * Kext * (Tmax - Tmin)^b, # MJ m^-2 day^-1,
-                                Rn= Sw*0.9
+                                Rn= Sw*0.75
     )
   }
 

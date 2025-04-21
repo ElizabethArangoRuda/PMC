@@ -37,7 +37,7 @@ clean_data <- function(input_data) {
     stop("Error: input_data must be a dataframe.")
   }
 
-  required_cols <- c("Date", "Tmin", "Tmax", "PPT", "ISI")
+  required_cols <- c("Date", "Tmin", "Tmax", "PPT")
 
   if (!all(required_cols %in% colnames(input_data))){
     missing_cols <- required_cols[!required_cols %in% colnames(input_data)]
@@ -61,7 +61,13 @@ clean_data <- function(input_data) {
 
   # Check if PET column exists and provide a message if not
   if (!"PET" %in% colnames(input_data)) {
-    message("The 'PET' column is missing. You can calculate it using the 'Calculate_PET()' function.")
+    message("The 'PET' column is missing. You can calculate it using the 'PETpt()' function.")
+  }
+
+  # Replace missing values in the 'PPT' column with 0
+  if ("PPT" %in% names(input_data)){
+    input_data$PPT[is.na(input_data$PPT)] <- 0
+    message("Missing values in 'PPT' column have been replaced with 0.")
   }
 
   # Check for missing values (excluding Date column)
