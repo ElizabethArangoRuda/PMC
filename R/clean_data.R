@@ -37,7 +37,7 @@ clean_data <- function(input_data) {
     stop("Error: input_data must be a dataframe.")
   }
 
-  required_cols <- c("Date", "Tmin", "Tmax", "PPT", "ISI")
+  required_cols <- c("Date", "Tmin", "Tmax", "PPT")
 
   if (!all(required_cols %in% colnames(input_data))){
     missing_cols <- required_cols[!required_cols %in% colnames(input_data)]
