@@ -23,7 +23,7 @@ This function prepares and validates the initial input dataset by ensuring it co
 \details{
 This function verifies that all required columns are present and that data types are correctly formatted. Specifically, it ensures the \code{Date} column is of class \code{Date}, and converts all other columns to numeric as needed. Any additional columns in the input data frame will be preserved unless otherwise specified.
 
-If the \code{PET} column is missing, a message will notify the user that it can be calculated using the \code{Calculate_PET()} function.
+If the \code{PET} column is missing, a message will notify the user that it can be calculated using the \code{PETpt()} function.
 
 If missing values are detected in the dataset, the function will prompt the user and, if approved, interpolate them using the \code{na.approx()} function from the \code{zoo} package.
 }
@@ -32,8 +32,7 @@ input_data <- data.frame(
   Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
   Tmin = c(-36.1, -23.8, -25.6),
   Tmax = c(-27.0, -7.5, -12.4),
-  PPT = c(0.0, 2.1, 0.1),
-  ISI = c(1.1, 1.2, 1.5)
+  PPT = c(0.0, 2.1, 0.1)
 )
 clean_data(input_data)
 

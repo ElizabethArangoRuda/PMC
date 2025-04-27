@@ -4,7 +4,17 @@
 \alias{PMC}
 \title{Peat Moisture Code (PMC)}
 \usage{
-PMC(input_data, PET_column, A, B, start_PMC, C, Sy_min, PMC_min)
+PMC(
+  input_data,
+  PET_column,
+  A,
+  B,
+  start_PMC,
+  C,
+  Sy_min,
+  PMC_min,
+  year_to_plot = NULL
+)
 }
 \arguments{
 \item{input_data}{A data frame that includes at least 'Date', the selected PET column (in cm), and 'eff_Precip_cm'.}
@@ -22,6 +32,8 @@ PMC(input_data, PET_column, A, B, start_PMC, C, Sy_min, PMC_min)
 \item{Sy_min}{Minimum allowable specific yield. Default is 0.1.}
 
 \item{PMC_min}{Minimum allowable PMC value to cap extreme low estimates. Optional.}
+
+\item{year_to_plot}{Optional. Numeric value indicating the year to display in a generated plot of daily PET.}
 }
 \value{
 A data frame that retains the original input columns and adds a new column with the calculated PMC values.
@@ -56,11 +68,12 @@ input_data <- data.frame(
   PET_Calculated = c(0.0034, 0.0154, 0.0111)
 )
 PMC(input_data,
-         PET_column = "PET_Calculated",
+         PET_column = "PET",
          A = 0.8674,
          B = 0.0540,
          start_PMC = 10,
          C = 0.1,
          Sy_min = 0.1,
-         PMC_min = -5)
+         PMC_min = -5,
+         year_to_plot = NULL)
 }

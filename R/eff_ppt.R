@@ -8,7 +8,7 @@
 #' @param threshold Numeric. The minimum precipitation threshold (in cm) required before water contributes to storage.
 #' This value is **user-dependent** and may vary by site or model assumptions. Default is 0.1 cm.
 #' @param column Character. The name of the column containing daily precipitation values (e.g., "PPT_cm").
-#'
+#' @param year_to_plot Optional. Numeric value indicating the year to display in a generated plot of daily PET.
 #' @return A dataframe including all original columns, along with a new column named \code{Eff_Precip}
 #' representing the effective precipitation values for each day.
 #'
@@ -21,9 +21,9 @@
 #'   Tmax = c(-27.0, -7.5, -12.4),
 #'   PPT_cm = c(0.0, 2.1, 0.1)
 #' )
-#' eff_ppt(input_data, column = "PPT_cm", threshold = 0.1)
+#' eff_ppt(input_data, column = "PPT_cm", threshold = 0.1, year_to_plot = c(2014,2016))
 
-eff_ppt <- function(input_data, column, threshold){
+eff_ppt <- function(input_data, column, threshold, year_to_plot=NULL){
 
   # Check for "Date" Column
   if (!"Date" %in% colnames(input_data)) {
@@ -43,16 +43,25 @@ eff_ppt <- function(input_data, column, threshold){
     stop("Error: The dataset must contain a 'Date' column formatted as 'YYYY-MM-DD'.")
   }
 
-  start_year <- as.numeric(format(min(input_data$Date), "%Y"))
-  end_year <- as.numeric(format(max(input_data$Date), "%Y"))
+
+
+  # Visuals
+  if (!is.null(year_to_plot)){
+    data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
+    message(paste("Plotting data for year:", year_to_plot))
+  }
+
+  start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
+  end_year <- as.numeric(format(max(data_filtered$Date), "%Y"))
   mid_dates <- seq.Date(
     from = as.Date(paste0(start_year, "-07-01")),
     to = as.Date(paste0(end_year, "-07-01")),
     by = "1 year"
   )
 
+
   # Plot the effective precipitation
-  plot1 <- ggplot2::ggplot(input_data, ggplot2::aes(x = Date, y = eff_Precip_cm)) +
+  plot1 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x = Date, y = eff_Precip_cm)) +
     ggplot2::geom_col(color = "blue") +
     ggplot2::scale_x_date(
       name = "Date",

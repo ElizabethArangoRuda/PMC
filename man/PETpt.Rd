@@ -26,7 +26,7 @@ PETpt(input_data, latitude, alpha, y, Gsc, lambda, a, b, year_to_plot = NULL)
 \item{year_to_plot}{Optional. Numeric value indicating the year to display in a generated plot of daily PET.}
 }
 \value{
-A data frame with the original columns plus a new column \code{PET_Calculated}, representing daily potential evapotranspiration in centimeters (cm).
+A data frame with the original columns plus a new column \code{PET}, representing daily potential evapotranspiration in centimeters (cm).
 }
 \description{
 This function estimates daily potential evapotranspiration (PET) using the Priestley–Taylor (PT) method, a simplified
@@ -67,6 +67,7 @@ PETpt(
   Gsc = 0.0820,
   lambda = 2453,
   a = 0.17,
-  b = 0.59
+  b = 0.59,
+  year_to_plot = c(2014,2016)
 )
 }

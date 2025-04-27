@@ -29,7 +29,7 @@
 #' @param C Lower limit for PET, constrained to a minimum of 0.3 to account for evapotranspiration from trees.
 #' @param Sy_min Minimum allowable specific yield. Default is 0.1.
 #' @param PMC_min Minimum allowable PMC value to cap extreme low estimates. Optional.
-#'
+#' @param year_to_plot Optional. Numeric value indicating the year to display in a generated plot of daily PET.
 #' @returns A data frame that retains the original input columns and adds a new column with the calculated PMC values.
 #'
 #' @export
@@ -41,13 +41,14 @@
 #'   PET_Calculated = c(0.0034, 0.0154, 0.0111)
 #' )
 #' PMC(input_data,
-#'          PET_column = "PET_Calculated",
+#'          PET_column = "PET",
 #'          A = 0.8674,
 #'          B = 0.0540,
 #'          start_PMC = 10,
 #'          C = 0.1,
 #'          Sy_min = 0.1,
-#'          PMC_min = -5)
+#'          PMC_min = -5,
+#'          year_to_plot = NULL)
 
 PMC <- function(input_data,
                      PET_column,
@@ -56,7 +57,9 @@ PMC <- function(input_data,
                      start_PMC,  # WTD = 10 cm is the starting point
                      C, # Limited to a minimum of 0.3 to account for ET from trees
                      Sy_min,
-                     PMC_min) {
+                     PMC_min,
+                year_to_plot=NULL
+                ) {
 
   # Initialize new columns
   input_data$PMC <- NA
@@ -131,16 +134,21 @@ PMC <- function(input_data,
     input_data$AET_today[i] <- AET_today
   }
 
-  start_year <- as.numeric(format(min(input_data$Date), "%Y"))
-  end_year <- as.numeric(format(max(input_data$Date), "%Y"))
+  # Visuals
+  if (!is.null(year_to_plot)){
+    data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
+    message(paste("Plotting data for year:", year_to_plot))
+  }
+
+  start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
+  end_year <- as.numeric(format(max(data_filtered$Date), "%Y"))
   mid_dates <- seq.Date(
     from = as.Date(paste0(start_year, "-07-01")),
     to = as.Date(paste0(end_year, "-07-01")),
     by = "1 year"
   )
 
-
-  plot <- ggplot2::ggplot(input_data, ggplot2::aes(x=Date)) +
+  plot <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
     ggplot2::geom_point(ggplot2::aes(y=PMC), color = "steelblue") +
     ggplot2::geom_line(ggplot2::aes(y=PMC), color = "steelblue") +
     ggplot2::scale_x_date(
@@ -171,6 +179,11 @@ PMC <- function(input_data,
     )
 
   print(plot)
+
+  remove_col <- c('Sy', 'AET_today', 'PET_multiplier')
+
+  # Only remove columns that exist in input_data
+  input_data <- dplyr::select(input_data, -dplyr::any_of(remove_col))
 
   message("PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI() function.")
   # Return the processed data

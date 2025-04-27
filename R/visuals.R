@@ -39,9 +39,27 @@ visuals <- function(input_data, var1, var2, var3, var4,
                     x_label_vr1,
                     x_label_vr2,
                     x_label_vr3,
-                    x_label_vr4){
+                    x_label_vr4,
+                    year_to_plot=NULL){
 
-  P1 <- ggplot2::ggplot(input_data, ggplot2::aes(x=Date)) +
+
+  # Visuals
+  if (!is.null(year_to_plot)){
+    data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
+    message(paste("Plotting data for year:", year_to_plot))
+  }
+
+  start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
+  end_year <- as.numeric(format(max(data_filtered$Date), "%Y"))
+  mid_dates <- seq.Date(
+    from = as.Date(paste0(start_year, "-07-01")),
+    to = as.Date(paste0(end_year, "-07-01")),
+    by = "1 year"
+  )
+
+
+
+  P1 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
     ggplot2::geom_line(ggplot2::aes(y = .data[[var1]]), color = "steelblue") + # Uses extraction operator
     ggplot2::scale_x_date(
       name = "Date",
@@ -56,7 +74,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::labs(title="a")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
       axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
@@ -67,13 +85,13 @@ visuals <- function(input_data, var1, var2, var3, var4,
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
       axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
-      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -5, size = 18),
+      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )
 
   P1
 
-  P2 <- ggplot2::ggplot(input_data, ggplot2::aes(x=Date)) +
+  P2 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
     ggplot2::geom_line(ggplot2::aes(y = .data[[var2]]), color = "steelblue") +
     ggplot2::scale_x_date(
       name = "Date",
@@ -88,7 +106,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::labs(title="b")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
       axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
@@ -99,13 +117,13 @@ visuals <- function(input_data, var1, var2, var3, var4,
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
       axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
-      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -5, size = 18),
+      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )
 
   P2
 
-  P3 <- ggplot2::ggplot(input_data, ggplot2::aes(x=Date)) +
+  P3 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
     ggplot2::geom_line(ggplot2::aes(y = .data[[var3]]), color = "steelblue") +
     ggplot2::scale_x_date(
       name = "Date",
@@ -120,7 +138,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::labs(title="c")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
       axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
@@ -131,14 +149,14 @@ visuals <- function(input_data, var1, var2, var3, var4,
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
       axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
-      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -5, size = 18),
+      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )
 
   P3
 
   # Plot the effective precipitation
-  P4 <- ggplot2::ggplot(input_data, ggplot2::aes(x = Date)) +
+  P4 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x = Date)) +
     ggplot2::geom_col(color = "blue", ggplot2::aes(y = .data[[var4]])) +
     ggplot2::scale_x_date(
       name = "Date",
@@ -150,13 +168,12 @@ visuals <- function(input_data, var1, var2, var3, var4,
                                 #limits = c(0, 100),
                                 #breaks = seq(0, 100, by = 20),
                                 expand = c(0.004, 0.004)) +
-    ggplot2::labs(title="c")+
+    ggplot2::labs(title="d")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = -2, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 14, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 14, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
-      axis.title.y = ggplot2::element_text(size = 18, colour = "black", vjust = 4),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),
       legend.title = ggplot2::element_blank(),
@@ -164,7 +181,8 @@ visuals <- function(input_data, var1, var2, var3, var4,
       legend.key.size = ggplot2::unit(0.8, "cm"),
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
-      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -5, size = 18),
+      axis.title.y = ggplot2::element_text(size = 14, colour = "black"),
+      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )
 

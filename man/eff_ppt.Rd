@@ -4,7 +4,7 @@
 \alias{eff_ppt}
 \title{Calculate Effective Precipitation}
 \usage{
-eff_ppt(input_data, column, threshold)
+eff_ppt(input_data, column, threshold, year_to_plot = NULL)
 }
 \arguments{
 \item{input_data}{A dataframe containing at least a 'Date' column and a daily precipitation column in centimeters.}
@@ -13,6 +13,8 @@ eff_ppt(input_data, column, threshold)
 
 \item{threshold}{Numeric. The minimum precipitation threshold (in cm) required before water contributes to storage.
 This value is \strong{user-dependent} and may vary by site or model assumptions. Default is 0.1 cm.}
+
+\item{year_to_plot}{Optional. Numeric value indicating the year to display in a generated plot of daily PET.}
 }
 \value{
 A dataframe including all original columns, along with a new column named \code{Eff_Precip}
@@ -30,5 +32,5 @@ input_data <- data.frame(
   Tmax = c(-27.0, -7.5, -12.4),
   PPT_cm = c(0.0, 2.1, 0.1)
 )
-eff_ppt(input_data, column = "PPT_cm", threshold = 0.1)
+eff_ppt(input_data, column = "PPT_cm", threshold = 0.1, year_to_plot = c(2014,2016))
 }

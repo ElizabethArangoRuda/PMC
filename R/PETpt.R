@@ -32,7 +32,7 @@
 #' @param b Numeric. Empirical coefficient for net radiation estimation. Default is 0.59.
 #' @param year_to_plot Optional. Numeric value indicating the year to display in a generated plot of daily PET.
 #'
-#' @return A data frame with the original columns plus a new column \code{PET_Calculated}, representing daily potential evapotranspiration in centimeters (cm).
+#' @return A data frame with the original columns plus a new column \code{PET}, representing daily potential evapotranspiration in centimeters (cm).
 #'
 #' @export
 #'
@@ -51,7 +51,8 @@
 #'   Gsc = 0.0820,
 #'   lambda = 2453,
 #'   a = 0.17,
-#'   b = 0.59
+#'   b = 0.59,
+#'   year_to_plot = c(2014,2016)
 #' )
 PETpt <- function(input_data,
                            latitude,
@@ -108,34 +109,32 @@ PETpt <- function(input_data,
   if (!"Rn" %in% colnames(input_data)){
     input_data <- dplyr::mutate(input_data,
                                 Sw = a * Kext * (Tmax - Tmin)^b, # MJ m^-2 day^-1,
-                                Rn= Sw*0.75
+                                Rn= Sw*0.72
     )
   }
 
   input_data <- dplyr::mutate(input_data,
                               # Priestly-Taylor ET
                               slope = 0.61365 * (17.502 / (240.97 + Tavg) - 17.502 * Tavg / ((240.97 + Tavg)^2)) * exp(17.502 * Tavg / (240.97 + Tavg)), # Slope of the saturation vapor pressure curve (kPa/°C)
-                              PET_Calculated = alpha * (slope / ((slope + y) * lambda)) * Rn * 100) # Daily ET in cm/day
+                              PET = alpha * (slope / ((slope + y) * lambda)) * Rn * 100) # Daily ET in cm/day
 
   # Visuals
   if (!is.null(year_to_plot)){
-    input_data <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
+    data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
     message(paste("Plotting data for year:", year_to_plot))
   }
 
-  start_year <- as.numeric(format(min(input_data$Date), "%Y"))
-  end_year <- as.numeric(format(max(input_data$Date), "%Y"))
+  start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
+  end_year <- as.numeric(format(max(data_filtered$Date), "%Y"))
   mid_dates <- seq.Date(
     from = as.Date(paste0(start_year, "-07-01")),
     to = as.Date(paste0(end_year, "-07-01")),
     by = "1 year"
   )
 
-
-
   ## Plot daily ET
-  plot1 <- ggplot2::ggplot(input_data, ggplot2::aes(x=Date)) +
-    ggplot2::geom_line(ggplot2::aes(y=PET_Calculated), color = "blue") +
+  plot1 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
+    ggplot2::geom_line(ggplot2::aes(y=PET), color = "blue") +
     ggplot2::scale_x_date(
       name = "Date",
       breaks = mid_dates,

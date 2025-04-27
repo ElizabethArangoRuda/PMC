@@ -13,7 +13,8 @@ visuals(
   x_label_vr1,
   x_label_vr2,
   x_label_vr3,
-  x_label_vr4
+  x_label_vr4,
+  year_to_plot = NULL
 )
 }
 \arguments{
