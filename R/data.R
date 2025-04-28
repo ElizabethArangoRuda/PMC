@@ -50,4 +50,21 @@
 #' @usage data(Fort_McMurray)
 #' @keywords datasets
 "Fort_McMurray"
+#' Grande Prairie Dataset
+#'
+#' A dataset that includes daily weather observations collected from the Grande Prairie weather station, located at a latitude of 55.17972.
+#'
+#' @format A tibble (or data frame) with 730 rows and 5 variables:
+#' \describe{
+#'   \item{Date}{Date of the observation (YYYY-MM-DD)}
+#'   \item{Tmin}{Minimum daily temperature (°C)}
+#'   \item{Tmax}{Maximum daily temperature (°C)}
+#'   \item{PPT}{Daily precipitation (cm)}
+#' }
+#'
+#' @source Data obtained from [ClimateData.ca](https://climatedata.ca/download/#station-download).
+#' @docType data
+#' @usage data(Fort_McMurray)
+#' @keywords datasets
+"Grande_Prairie"
 

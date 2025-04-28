@@ -16,12 +16,12 @@
 #'
 #' @examples
 #' input_data <- data.frame(
-#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
 #'   Tmin = c(-36.1, -23.8, -25.6),
 #'   Tmax = c(-27.0, -7.5, -12.4),
 #'   PPT_cm = c(0.0, 2.1, 0.1)
 #' )
-#' eff_ppt(input_data, column = "PPT_cm", threshold = 0.1, year_to_plot = c(2014,2016))
+#' eff_ppt(input_data, column = "PPT_cm", threshold = 0.1, year_to_plot = "2024")
 
 eff_ppt <- function(input_data, column, threshold, year_to_plot=NULL){
 
@@ -48,7 +48,7 @@ eff_ppt <- function(input_data, column, threshold, year_to_plot=NULL){
   # Visuals
   if (!is.null(year_to_plot)){
     data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
-    message(paste("Plotting data for year:", year_to_plot))
+    #message(paste("Plotting data for year:", year_to_plot))
   }
 
   start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
@@ -73,8 +73,8 @@ eff_ppt <- function(input_data, column, threshold, year_to_plot=NULL){
                        expand = c(0.004, 0.004)) +
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 14, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 14, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),

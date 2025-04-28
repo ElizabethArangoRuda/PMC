@@ -12,28 +12,30 @@
 #' @param x_label_vr2 The y-axis label for the second variable.
 #' @param x_label_vr3 The y-axis label for the third variable.
 #' @param x_label_vr4 The y-axis label for the fourth variable.
+#' @param year_to_plot Optional. Numeric value indicating the year to display in a generated plot of daily PET.
 #'
 #' @return A combined figure containing four ggplot2 panels arranged vertically, each showing the time series of one variable.
 #' @export
 #'
 #' @examples
 #' input_data <- data.frame(
-#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
-#'   PET_Calculated = c(0.0034, 0.0154, 0.0111),
-#'   Tmean = c(-31.55, -15.65, -19.00),
+#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
+#'   PET = c(0.0034, 0.0154, 0.0111),
+#'   Tavg = c(-31.55, -15.65, -19.00),
 #'   PMC = c(10.01, 9.69, 9.69),
 #'   eff_Precip_cm = c(0.00, 0.21, 0.01)
 #' )
 #' visuals(
 #'   input_data,
-#'   var1 = "PET_Calculated",
+#'   var1 = "PET",
 #'   var2 = "Tavg",
 #'   var3 = "PMC",
 #'   var4 = "eff_Precip_cm",
 #'   x_label_vr1 = "PET (cm)",
 #'   x_label_vr2 = "Tair (°C)",
 #'   x_label_vr3 = "PMC",
-#'   x_label_vr4 = "Effective Precipitation (cm)"
+#'   x_label_vr4 = "Effective Precipitation (cm)",
+#'   year_to_plot = "2024"
 #' )
 visuals <- function(input_data, var1, var2, var3, var4,
                     x_label_vr1,
@@ -45,8 +47,8 @@ visuals <- function(input_data, var1, var2, var3, var4,
 
   # Visuals
   if (!is.null(year_to_plot)){
-    data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
-    message(paste("Plotting data for year:", year_to_plot))
+    data_filtered <-  dplyr::filter(input_data, lubridate::year(Date) %in% year_to_plot)
+    #message(paste("Plotting data for year:", year_to_plot))
   }
 
   start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
@@ -57,13 +59,11 @@ visuals <- function(input_data, var1, var2, var3, var4,
     by = "1 year"
   )
 
-
-
   P1 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
     ggplot2::geom_line(ggplot2::aes(y = .data[[var1]]), color = "steelblue") + # Uses extraction operator
     ggplot2::scale_x_date(
       name = "Date",
-      date_breaks = "year",
+      breaks = mid_dates,
       labels = scales::date_format("%Y"),
       expand = c(0.004, 0.004)
     ) +
@@ -74,8 +74,8 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::labs(title="a")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),
@@ -95,7 +95,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::geom_line(ggplot2::aes(y = .data[[var2]]), color = "steelblue") +
     ggplot2::scale_x_date(
       name = "Date",
-      date_breaks = "year",
+      breaks = mid_dates,
       labels = scales::date_format("%Y"),
       expand = c(0.004, 0.004)
     ) +
@@ -106,8 +106,8 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::labs(title="b")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),
@@ -127,7 +127,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::geom_line(ggplot2::aes(y = .data[[var3]]), color = "steelblue") +
     ggplot2::scale_x_date(
       name = "Date",
-      date_breaks = "year",
+      breaks = mid_dates,
       labels = scales::date_format("%Y"),
       expand = c(0.004, 0.004)
     ) +
@@ -138,8 +138,8 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::labs(title="c")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),
@@ -160,7 +160,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::geom_col(color = "blue", ggplot2::aes(y = .data[[var4]])) +
     ggplot2::scale_x_date(
       name = "Date",
-      date_breaks = "1 year",
+      breaks = mid_dates,
       labels = scales::date_format("%Y"),  # Explicitly call `scales::date_format()`
       expand = c(0, 0)
     ) +
@@ -171,8 +171,8 @@ visuals <- function(input_data, var1, var2, var3, var4,
     ggplot2::labs(title="d")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 14, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 14, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),

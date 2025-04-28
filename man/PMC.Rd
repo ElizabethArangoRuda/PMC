@@ -63,9 +63,9 @@ The parameters \code{A=0.8674} and \code{B=0.0540} are derived from an exponenti
 }
 \examples{
 input_data <- data.frame(
-  Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+  Date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
   eff_Precip_cm = c(0.0, 0.21, 0.01),
-  PET_Calculated = c(0.0034, 0.0154, 0.0111)
+  PET = c(0.0034, 0.0154, 0.0111)
 )
 PMC(input_data,
          PET_column = "PET",
@@ -75,5 +75,5 @@ PMC(input_data,
          C = 0.1,
          Sy_min = 0.1,
          PMC_min = -5,
-         year_to_plot = NULL)
+         year_to_plot = "2024")
 }

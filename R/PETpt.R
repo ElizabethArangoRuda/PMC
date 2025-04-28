@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' input_data <- data.frame(
-#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
 #'   Tmin = c(-36.1, -23.8, -25.6),
 #'   Tmax = c(-27.0, -7.5, -12.4)
 #' )
@@ -52,7 +52,7 @@
 #'   lambda = 2453,
 #'   a = 0.17,
 #'   b = 0.59,
-#'   year_to_plot = c(2014,2016)
+#'   year_to_plot = "2024"
 #' )
 PETpt <- function(input_data,
                            latitude,
@@ -120,8 +120,8 @@ PETpt <- function(input_data,
 
   # Visuals
   if (!is.null(year_to_plot)){
-    data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
-    message(paste("Plotting data for year:", year_to_plot))
+    data_filtered <- dplyr::filter(input_data, lubridate::year(Date) %in% year_to_plot)
+    #message(paste("Plotting data for year:", year_to_plot))
   }
 
   start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
@@ -148,8 +148,8 @@ PETpt <- function(input_data,
     ggplot2::labs(title="Priestly-Taylor Potential Evapotranspiration")+
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, hjust = 0.5, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, hjust = 0.5, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),

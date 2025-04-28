@@ -36,9 +36,9 @@
 #'
 #' @examples
 #' input_data <- data.frame(
-#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+#'   Date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
 #'   eff_Precip_cm = c(0.0, 0.21, 0.01),
-#'   PET_Calculated = c(0.0034, 0.0154, 0.0111)
+#'   PET = c(0.0034, 0.0154, 0.0111)
 #' )
 #' PMC(input_data,
 #'          PET_column = "PET",
@@ -48,7 +48,7 @@
 #'          C = 0.1,
 #'          Sy_min = 0.1,
 #'          PMC_min = -5,
-#'          year_to_plot = NULL)
+#'          year_to_plot = "2024")
 
 PMC <- function(input_data,
                      PET_column,
@@ -137,7 +137,7 @@ PMC <- function(input_data,
   # Visuals
   if (!is.null(year_to_plot)){
     data_filtered <-  dplyr::filter(input_data, lubridate::year(Date)== year_to_plot)
-    message(paste("Plotting data for year:", year_to_plot))
+    #message(paste("Plotting data for year:", year_to_plot))
   }
 
   start_year <- as.numeric(format(min(data_filtered$Date), "%Y"))
@@ -163,8 +163,8 @@ PMC <- function(input_data,
                        expand = c(0.004, 0.004)) +
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 18, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 18, colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
       axis.title.x = ggplot2::element_blank(),
       legend.direction = "horizontal",
       legend.text = ggplot2::element_text(size = 14),

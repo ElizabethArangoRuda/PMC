@@ -54,7 +54,7 @@ The resulting PET values are expressed in centimeters (cm) per day.
 }
 \examples{
 input_data <- data.frame(
-  Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
+  Date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
   Tmin = c(-36.1, -23.8, -25.6),
   Tmax = c(-27.0, -7.5, -12.4)
 )
@@ -68,6 +68,6 @@ PETpt(
   lambda = 2453,
   a = 0.17,
   b = 0.59,
-  year_to_plot = c(2014,2016)
+  year_to_plot = "2024"
 )
 }

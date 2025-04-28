@@ -35,6 +35,8 @@ visuals(
 \item{x_label_vr3}{The y-axis label for the third variable.}
 
 \item{x_label_vr4}{The y-axis label for the fourth variable.}
+
+\item{year_to_plot}{Optional. Numeric value indicating the year to display in a generated plot of daily PET.}
 }
 \value{
 A combined figure containing four ggplot2 panels arranged vertically, each showing the time series of one variable.
@@ -45,21 +47,22 @@ It is useful for comparing key hydrometeorological and modeled parameters over t
 }
 \examples{
 input_data <- data.frame(
-  Date = as.Date(c("2024-01-01", "2024-01-02", "2023-01-03")),
-  PET_Calculated = c(0.0034, 0.0154, 0.0111),
-  Tmean = c(-31.55, -15.65, -19.00),
+  Date = as.Date(c("2024-01-01", "2024-01-02", "2024-01-03")),
+  PET = c(0.0034, 0.0154, 0.0111),
+  Tavg = c(-31.55, -15.65, -19.00),
   PMC = c(10.01, 9.69, 9.69),
   eff_Precip_cm = c(0.00, 0.21, 0.01)
 )
 visuals(
   input_data,
-  var1 = "PET_Calculated",
+  var1 = "PET",
   var2 = "Tavg",
   var3 = "PMC",
   var4 = "eff_Precip_cm",
   x_label_vr1 = "PET (cm)",
   x_label_vr2 = "Tair (°C)",
   x_label_vr3 = "PMC",
-  x_label_vr4 = "Effective Precipitation (cm)"
+  x_label_vr4 = "Effective Precipitation (cm)",
+  year_to_plot = "2024"
 )
 }
