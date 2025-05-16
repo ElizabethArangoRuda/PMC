@@ -22,7 +22,7 @@ PMCISI <- function(input_data, year_to_plot=NULL){
 
   input_data <- dplyr::mutate(input_data,
                               PMC_ISI = PMC*ISI,
-                              PMC_ISI_scaled = PMC*ISI/12) # Calculate PMCi as PMC * ISI / 12 so it roughly scales to between 10 and 100
+                              PMC_ISI_scaled = PMC*ISI/14) # Calculate PMCi as PMC * ISI / 12 so it roughly scales to between 10 and 100
 
   # Visuals
   if (!is.null(year_to_plot)){

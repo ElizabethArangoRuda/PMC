@@ -33,8 +33,8 @@
 #'   var4 = "eff_Precip_cm",
 #'   x_label_vr1 = "PET (cm)",
 #'   x_label_vr2 = "Tair (°C)",
-#'   x_label_vr3 = "PMC",
-#'   x_label_vr4 = "Effective Precipitation (cm)",
+#'   x_label_vr3 = "Effective Precipitation (cm)",
+#'   x_label_vr4 = "PMC",
 #'   year_to_plot = "2024"
 #' )
 visuals <- function(input_data, var1, var2, var3, var4,
@@ -123,40 +123,8 @@ visuals <- function(input_data, var1, var2, var3, var4,
 
   P2
 
-  P3 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
-    ggplot2::geom_line(ggplot2::aes(y = .data[[var3]]), color = "steelblue") +
-    ggplot2::scale_x_date(
-      name = "Date",
-      breaks = mid_dates,
-      labels = scales::date_format("%Y"),
-      expand = c(0.004, 0.004)
-    ) +
-    ggplot2::scale_y_continuous(name = x_label_vr3,
-                       #limits = c(0, 100),
-                       #breaks = seq(0, 100, by = 20),
-                       expand = c(0.004, 0.004)) +
-    ggplot2::labs(title="c")+
-    ggplot2::theme(
-      panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
-      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
-      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
-      axis.title.x = ggplot2::element_blank(),
-      legend.direction = "horizontal",
-      legend.text = ggplot2::element_text(size = 14),
-      legend.title = ggplot2::element_blank(),
-      legend.background = ggplot2::element_blank(),
-      legend.key.size = ggplot2::unit(0.8, "cm"),
-      legend.key.width = ggplot2::unit(1, "cm"),
-      legend.key = ggplot2::element_rect(colour = NA, fill = NA),
-      axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
-      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
-      plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
-    )
-
-  P3
-
   # Plot the effective precipitation
-  P4 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x = Date)) +
+  P3 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x = Date)) +
     ggplot2::geom_col(color = "blue", ggplot2::aes(y = .data[[var4]])) +
     ggplot2::scale_x_date(
       name = "Date",
@@ -182,6 +150,38 @@ visuals <- function(input_data, var1, var2, var3, var4,
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
       axis.title.y = ggplot2::element_text(size = 14, colour = "black"),
+      plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
+      plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
+    )
+
+  P3
+
+  P4 <- ggplot2::ggplot(data_filtered, ggplot2::aes(x=Date)) +
+    ggplot2::geom_line(ggplot2::aes(y = .data[[var3]]), color = "steelblue") +
+    ggplot2::scale_x_date(
+      name = "Date",
+      breaks = mid_dates,
+      labels = scales::date_format("%Y"),
+      expand = c(0.004, 0.004)
+    ) +
+    ggplot2::scale_y_continuous(name = x_label_vr3,
+                       #limits = c(0, 100),
+                       #breaks = seq(0, 100, by = 20),
+                       expand = c(0.004, 0.004)) +
+    ggplot2::labs(title="c")+
+    ggplot2::theme(
+      panel.background = ggplot2::element_rect(fill = "white", colour = "black"),
+      axis.text.x = ggplot2::element_text(angle = 0, size = 10, color = "black"),
+      axis.text.y = ggplot2::element_text(size = 10, colour = "black"),
+      axis.title.x = ggplot2::element_blank(),
+      legend.direction = "horizontal",
+      legend.text = ggplot2::element_text(size = 14),
+      legend.title = ggplot2::element_blank(),
+      legend.background = ggplot2::element_blank(),
+      legend.key.size = ggplot2::unit(0.8, "cm"),
+      legend.key.width = ggplot2::unit(1, "cm"),
+      legend.key = ggplot2::element_rect(colour = NA, fill = NA),
+      axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
       plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )

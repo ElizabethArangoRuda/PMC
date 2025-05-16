@@ -38,6 +38,9 @@ clean_data <- function(input_data) {
 
   required_cols <- c("Date", "Tmin", "Tmax", "PPT")
 
+  #required_cols <- c("Date", "Tmin", "Tmax", "PPT", "ISI")
+  #required_cols <- c("Date", "PPT", "Tavg", "T_Snow","Tmin", "Tmax", "T_Rain")
+
   if (!all(required_cols %in% colnames(input_data))){
     missing_cols <- required_cols[!required_cols %in% colnames(input_data)]
     stop(paste("Error: The following required columns are missing:", paste(missing_cols, collapse = ",")))
