@@ -83,6 +83,7 @@ multiplying by 0.1.
 
 ``` r
 ?mm_to_cm
+#> ℹ Rendering development documentation for "mm_to_cm"
 df <- mm_to_cm(df, columns = "PPT")
 #> The following column(s) were successfully converted from millimeters to centimeters: PPT
 #> You can now compute effective precipitation using the `eff_ppt()` function.
@@ -97,6 +98,7 @@ the minimum precipitation to be considered effective.
 
 ``` r
 ?eff_ppt
+#> ℹ Rendering development documentation for "eff_ppt"
 df <- eff_ppt(df, column = "PPT_cm", threshold = 0.1, year_to_plot = "2015")
 #> Effective precipitation was calculated using a threshold of 0.1
 #> You can now compute potential evapotranspiration using the `PETpt()` function.
@@ -110,6 +112,7 @@ equation suitable for peatland environments.
 
 ``` r
 ?PETpt
+#> ℹ Rendering development documentation for "PETpt"
 df <- PETpt(df,
   latitude = 65.2825,
     alpha = 1,
@@ -133,6 +136,7 @@ decreases when water storage is replenished.
 
 ``` r
 ?PMC
+#> ℹ Rendering development documentation for "PMC"
 df <- PMC(df,
     PET_column = "PET",
     A = 0.8674,
@@ -153,6 +157,7 @@ four-panel figure summarizing key hydrometeorological variables.
 
 ``` r
 ?PMC
+#> ℹ Rendering development documentation for "PMC"
 df <- visuals(df,
     var1 = "PET",
     var2 = "Tavg",
