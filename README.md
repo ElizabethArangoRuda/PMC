@@ -67,21 +67,26 @@ Prepares input data for PMC calculations by standardizing column names
 and formats. It is recommended to run this function before any other
 PMC-related functions.
 
-    #> The 'PET' column is missing. You can calculate it using the 'PETpt()' function.
-    #> Missing values in 'PPT' column have been replaced with 0.
-    #> No missing values found.
-    #> Note: 'PPT' and 'PET' values must be in centimeters (cm). If your data is in millimeters (mm), please use the 'mm_to_cm()' function to convert it.
-    #> Data processed successfully with 730 rows and 4 columns.
+``` r
+df <- clean_data(Mildred_Lake)
+#> The 'PET' column is missing. You can calculate it using the 'PETpt()' function.
+#> Missing values in 'PPT' column have been replaced with 0.
+#> No missing values found.
+#> Note: 'PPT' and 'PET' values must be in centimeters (cm). If your data is in millimeters (mm), please use the 'mm_to_cm()' function to convert it.
+#> Data processed successfully with 730 rows and 4 columns.
+```
 
 mm_to_cm()
 
 Converts selected variables from millimeters (mm) to centimeters (cm) by
 multiplying by 0.1.
 
-    #> ℹ Rendering development documentation for "mm_to_cm"
-    #> The following column(s) were successfully converted from millimeters to centimeters: PPT
-    #> 
-    #> You can now compute effective precipitation using the `eff_ppt()` function.
+``` r
+?mm_to_cm
+df <- mm_to_cm(df, columns = "PPT")
+#> The following column(s) were successfully converted from millimeters to centimeters: PPT
+#> You can now compute effective precipitation using the `eff_ppt()` function.
+```
 
 eff_ppt()
 
@@ -90,10 +95,12 @@ precipitation that contributes to peat moisture storage (after
 subtracting negligible rainfall events). The threshold argument defines
 the minimum precipitation to be considered effective.
 
-    #> ℹ Rendering development documentation for "eff_ppt"
-    #> Effective precipitation was calculated using a threshold of 0.1
-    #> 
-    #> You can now compute potential evapotranspiration using the `PETpt()` function.
+``` r
+?eff_ppt
+df <- eff_ppt(df, column = "PPT_cm", threshold = 0.1, year_to_plot = "2015")
+#> Effective precipitation was calculated using a threshold of 0.1
+#> You can now compute potential evapotranspiration using the `PETpt()` function.
+```
 
 <img src="man/figures/README-c5-1.png" width="100%" /> PETpt()
 
@@ -101,8 +108,19 @@ Computes daily potential evapotranspiration (PET) using the
 Priestley–Taylor method, a simplified alternative to the Penman–Monteith
 equation suitable for peatland environments.
 
-    #> ℹ Rendering development documentation for "PETpt"
-    #> PET calculation completed successfully. You may now proceed with PMC estimation using the `PMC()` function.
+``` r
+?PETpt
+df <- PETpt(df,
+  latitude = 65.2825,
+    alpha = 1,
+    y = 0.063,
+    Gsc = 0.0820,
+    lambda = 2453,
+    a = 0.17,
+    b = 0.59,
+    year_to_plot = "2014")
+#> PET calculation completed successfully. You may now proceed with PMC estimation using the `PMC()` function.
+```
 
 <img src="man/figures/README-c6-1.png" width="100%" />
 
@@ -113,8 +131,19 @@ water‐balance approach that integrates effective precipitation and
 actual evapotranspiration. PMC increases during drying periods and
 decreases when water storage is replenished.
 
-    #> ℹ Rendering development documentation for "PMC"
-    #> PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI() function.
+``` r
+?PMC
+df <- PMC(df,
+    PET_column = "PET",
+    A = 0.8674,
+    B = 0.0540,
+    start_PMC = 10,
+    C = 0.15, # C = 0.1
+    Sy_min = 0.1,
+    PMC_min = 0.1,
+    year_to_plot = "2014")
+#> PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI() function.
+```
 
 <img src="man/figures/README-c7-1.png" width="100%" /> \## Visualization
 utilities
@@ -122,6 +151,19 @@ utilities
 The package includes visuals(), a helper function to produce a
 four-panel figure summarizing key hydrometeorological variables.
 
-    #> ℹ Rendering development documentation for "PMC"
+``` r
+?PMC
+df <- visuals(df,
+    var1 = "PET",
+    var2 = "Tavg",
+    var3 = "PMC",
+    var4 = "eff_Precip_cm",
+    x_label_vr1 = "PET (cm)",
+    x_label_vr2 = "Tair (°C)",
+    x_label_vr3 = "PMC",
+    x_label_vr4 = "Effective Precipitation (cm)",
+    year_to_plot = "2014"
+  )
+```
 
 <img src="man/figures/README-c8-1.png" width="100%" />

@@ -68,14 +68,14 @@ clean_data()
 Prepares input data for PMC calculations by standardizing column names and formats.
 It is recommended to run this function before any other PMC-related functions.
 
-```{r c3, echo = FALSE}
+```{r c3, echo = TRUE}
 df <- clean_data(Mildred_Lake)
 ```
 mm_to_cm()
 
 Converts selected variables from millimeters (mm) to centimeters (cm) by multiplying by 0.1.
 
-```{r c4, echo = FALSE}
+```{r c4, echo = TRUE}
 ?mm_to_cm
 df <- mm_to_cm(df, columns = "PPT")
 ```
@@ -84,7 +84,7 @@ eff_ppt()
 Calculates effective precipitation, representing the portion of precipitation that contributes to peat moisture storage (after subtracting negligible rainfall events).
 The threshold argument defines the minimum precipitation to be considered effective.
 
-```{r c5, echo = FALSE}
+```{r c5, echo = TRUE}
 ?eff_ppt
 df <- eff_ppt(df, column = "PPT_cm", threshold = 0.1, year_to_plot = "2015")
 ```
@@ -92,7 +92,7 @@ PETpt()
 
 Computes daily potential evapotranspiration (PET) using the Priestley–Taylor method, a simplified alternative to the Penman–Monteith equation suitable for peatland environments. 
 
-```{r c6, echo = FALSE}
+```{r c6, echo = TRUE}
 ?PETpt
 df <- PETpt(df,
   latitude = 65.2825,
@@ -110,7 +110,7 @@ df <- PETpt(df,
 The PMC() function calculates the daily Peat Moisture Code using a water‐balance approach that integrates effective precipitation and actual evapotranspiration.
 PMC increases during drying periods and decreases when water storage is replenished.
 
-```{r c7, echo = FALSE}
+```{r c7, echo = TRUE}
 ?PMC
 df <- PMC(df,
     PET_column = "PET",
@@ -126,7 +126,7 @@ df <- PMC(df,
 
 The package includes visuals(), a helper function to produce a four-panel figure summarizing key hydrometeorological variables.
 
-```{r c8, echo = FALSE}
+```{r c8, echo = TRUE}
 ?PMC
 df <- visuals(df,
     var1 = "PET",
