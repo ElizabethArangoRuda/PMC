@@ -6,7 +6,22 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of PMC is to …
+The PMC package provides tools to calculate the Peat Moisture Code
+(PMC)—a daily moisture index designed specifically for peatland
+ecosystems with deep organic soil profiles. PMC integrates effective
+precipitation, evapotranspiration, and peat hydrological properties to
+simulate subsurface moisture conditions relevant for fire danger rating,
+drought monitoring, and ecological assessment.
+
+The package includes:
+
+\*Functions to prepare and standardize meteorological inputs
+
+\*Tools to compute effective precipitation, PET, and daily PMC
+
+\*Visualization utilities
+
+\*Four example datasets from peatland-dominated regions in Canada
 
 ## Installation
 
@@ -20,44 +35,93 @@ devtools::install_github("ElizabethArangoRuda/PMC")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Load the package:
 
 ``` r
 library(PMC)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+## Example datasets
+
+The package includes four peatland meteorological datasets:
+
+*Fort_McMurray.rda *Grande_Prairie.rda *Mildred_Lake.rda *Slave_Lake.rda
 
 ``` r
-data("Mildred_Lake_Data")
-summary(Mildred_Lake_Data)
+data("Mildred_Lake")
+summary(Mildred_Lake)
 #>       Date                 Tmin              Tmax              PPT         
 #>  Min.   :2014-01-01   Min.   :-39.000   Min.   :-27.000   Min.   : 0.0000  
 #>  1st Qu.:2014-07-02   1st Qu.:-14.150   1st Qu.: -4.800   1st Qu.: 0.0000  
 #>  Median :2014-12-31   Median : -0.350   Median :  8.600   Median : 0.1000  
 #>  Mean   :2014-12-31   Mean   : -3.141   Mean   :  7.406   Mean   : 0.9121  
 #>  3rd Qu.:2015-07-01   3rd Qu.:  8.300   3rd Qu.: 20.600   3rd Qu.: 0.6000  
-#>  Max.   :2015-12-31   Max.   : 18.800   Max.   : 34.000   Max.   :36.9000  
-#>       ISI        
-#>  Min.   : 0.000  
-#>  1st Qu.: 0.800  
-#>  Median : 1.800  
-#>  Mean   : 3.569  
-#>  3rd Qu.: 4.900  
-#>  Max.   :24.700
+#>  Max.   :2015-12-31   Max.   : 18.800   Max.   : 34.000   Max.   :36.9000
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+## Preprocessing functions
 
-You can also embed plots, for example:
+clean_data()
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+Prepares input data for PMC calculations by standardizing column names
+and formats. It is recommended to run this function before any other
+PMC-related functions.
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+    #> The 'PET' column is missing. You can calculate it using the 'PETpt()' function.
+    #> Missing values in 'PPT' column have been replaced with 0.
+    #> No missing values found.
+    #> Note: 'PPT' and 'PET' values must be in centimeters (cm). If your data is in millimeters (mm), please use the 'mm_to_cm()' function to convert it.
+    #> Data processed successfully with 730 rows and 4 columns.
+
+mm_to_cm()
+
+Converts selected variables from millimeters (mm) to centimeters (cm) by
+multiplying by 0.1.
+
+    #> ℹ Rendering development documentation for "mm_to_cm"
+    #> The following column(s) were successfully converted from millimeters to centimeters: PPT
+    #> 
+    #> You can now compute effective precipitation using the `eff_ppt()` function.
+
+eff_ppt()
+
+Calculates effective precipitation, representing the portion of
+precipitation that contributes to peat moisture storage (after
+subtracting negligible rainfall events). The threshold argument defines
+the minimum precipitation to be considered effective.
+
+    #> ℹ Rendering development documentation for "eff_ppt"
+    #> Effective precipitation was calculated using a threshold of 0.1
+    #> 
+    #> You can now compute potential evapotranspiration using the `PETpt()` function.
+
+<img src="man/figures/README-c5-1.png" width="100%" /> PETpt()
+
+Computes daily potential evapotranspiration (PET) using the
+Priestley–Taylor method, a simplified alternative to the Penman–Monteith
+equation suitable for peatland environments.
+
+    #> ℹ Rendering development documentation for "PETpt"
+    #> PET calculation completed successfully. You may now proceed with PMC estimation using the `PMC()` function.
+
+<img src="man/figures/README-c6-1.png" width="100%" />
+
+## Computing the Peat Moisture Code (PMC)
+
+The PMC() function calculates the daily Peat Moisture Code using a
+water‐balance approach that integrates effective precipitation and
+actual evapotranspiration. PMC increases during drying periods and
+decreases when water storage is replenished.
+
+    #> ℹ Rendering development documentation for "PMC"
+    #> PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI() function.
+
+<img src="man/figures/README-c7-1.png" width="100%" /> \## Visualization
+utilities
+
+The package includes visuals(), a helper function to produce a
+four-panel figure summarizing key hydrometeorological variables.
+
+    #> ℹ Rendering development documentation for "PMC"
+
+<img src="man/figures/README-c8-1.png" width="100%" />

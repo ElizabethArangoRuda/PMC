@@ -26,7 +26,7 @@
 #' @param A Parameter from the exponential Sy-depth relationship. Default is 0.8674.
 #' @param B Parameter from the exponential Sy-depth relationship. Default is 0.0540.
 #' @param start_PMC Initial PMC value (i.e., initial water table depth in cm).
-#' @param C Lower limit for PET, constrained to a minimum of 0.3 to account for evapotranspiration from trees.
+#' @param C Lower limit for PET, constrained to a minimum of 0.15 to account for evapotranspiration from trees.
 #' @param Sy_min Minimum allowable specific yield. Default is 0.1.
 #' @param PMC_min Minimum allowable PMC value to cap extreme low estimates. Optional.
 #' @param year_to_plot Optional. Numeric value indicating the year to display in a generated plot of daily PET.
@@ -45,7 +45,7 @@
 #'          A = 0.8674,
 #'          B = 0.0540,
 #'          start_PMC = 10,
-#'          C = 0.1,
+#'          C = 0.15,
 #'          Sy_min = 0.1,
 #'          PMC_min = -5,
 #'          year_to_plot = "2024")
