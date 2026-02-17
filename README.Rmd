@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  echo = TRUE
 )
 ```
 
@@ -18,7 +19,18 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of PMC is to ...
+The PMC package provides tools to calculate the Peat Moisture Code (PMC)—a daily moisture index designed specifically for peatland ecosystems with deep organic soil profiles.
+PMC integrates effective precipitation, evapotranspiration, and peat hydrological properties to simulate subsurface moisture conditions relevant for fire danger rating, drought monitoring, and ecological assessment.
+
+The package includes:
+
+*Functions to prepare and standardize meteorological inputs
+
+*Tools to compute effective precipitation, PET, and daily PMC
+
+*Visualization utilities
+
+*Four example datasets from peatland-dominated regions in Canada
 
 ## Installation
 
@@ -31,25 +43,102 @@ devtools::install_github("ElizabethArangoRuda/PMC")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Load the package:
 
-```{r example}
+```{r c1}
 library(PMC)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Example datasets
 
-```{r cars}
-summary(cars)
+The package includes four peatland meteorological datasets:
+
+*Fort_McMurray.rda
+*Grande_Prairie.rda
+*Mildred_Lake.rda
+*Slave_Lake.rda
+
+```{r c2}
+data("Mildred_Lake")
+summary(Mildred_Lake)
+```
+## Preprocessing functions
+
+clean_data()
+
+Prepares input data for PMC calculations by standardizing column names and formats.
+It is recommended to run this function before any other PMC-related functions.
+
+```{r c3, echo = TRUE}
+df <- clean_data(Mildred_Lake)
+```
+mm_to_cm()
+
+Converts selected variables from millimeters (mm) to centimeters (cm) by multiplying by 0.1.
+
+```{r c4, echo = TRUE}
+?mm_to_cm
+df <- mm_to_cm(df, columns = "PPT")
+```
+eff_ppt()
+
+Calculates effective precipitation, representing the portion of precipitation that contributes to peat moisture storage (after subtracting negligible rainfall events).
+The threshold argument defines the minimum precipitation to be considered effective.
+
+```{r c5, echo = TRUE}
+?eff_ppt
+df <- eff_ppt(df, column = "PPT_cm", threshold = 0.1, year_to_plot = "2015")
+```
+PETpt()
+
+Computes daily potential evapotranspiration (PET) using the Priestley–Taylor method, a simplified alternative to the Penman–Monteith equation suitable for peatland environments. 
+
+```{r c6, echo = TRUE}
+?PETpt
+df <- PETpt(df,
+  latitude = 65.2825,
+    alpha = 1,
+    y = 0.063,
+    Gsc = 0.0820,
+    lambda = 2453,
+    a = 0.17,
+    b = 0.59,
+    year_to_plot = "2014")
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
+## Computing the Peat Moisture Code (PMC)
 
-You can also embed plots, for example:
+The PMC() function calculates the daily Peat Moisture Code using a water‐balance approach that integrates effective precipitation and actual evapotranspiration.
+PMC increases during drying periods and decreases when water storage is replenished.
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r c7, echo = TRUE}
+?PMC
+df <- PMC(df,
+    PET_column = "PET",
+    A = 0.8674,
+    B = 0.0540,
+    start_PMC = 10,
+    C = 0.15, # C = 0.1
+    Sy_min = 0.1,
+    PMC_min = 0.1,
+    year_to_plot = "2014")
 ```
+## Visualization utilities
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+The package includes visuals(), a helper function to produce a four-panel figure summarizing key hydrometeorological variables.
+
+```{r c8, echo = TRUE}
+?PMC
+df <- visuals(df,
+    var1 = "PET",
+    var2 = "Tavg",
+    var3 = "PMC",
+    var4 = "eff_Precip_cm",
+    x_label_vr1 = "PET (cm)",
+    x_label_vr2 = "Tair (°C)",
+    x_label_vr3 = "PMC",
+    x_label_vr4 = "Effective Precipitation (cm)",
+    year_to_plot = "2014"
+  )
+
+```
