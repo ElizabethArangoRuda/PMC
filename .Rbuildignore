@@ -5,3 +5,4 @@
 ^\.RDataTmp
 ^\.Rhistory$
 ^README\.html$
+^README\.Rmd$

@@ -2,10 +2,14 @@ Package: PMC
 Type: Package
 Title: The Peat Moisture Code
 Version: 0.1.0
-Authors@R:
-    person("Sophie", "Wilkinson", , "sophie_wilkinson@sfu.ca", role = c("aut", "cre"), 
-    comment = c(ORCID = "0000-0002-4043-6277"))
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: c(
+    person("Elizabeth", "Arango Ruda", email = "earangor@unal.edu.co", 
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0003-4990-4513")),
+    person("Koreen", "Millard", email = "koreen_millard@carleton.ca", 
+           role = "aut", comment = c(ORCID = "0000-0002-6346-0325")),
+    person("Sophie", "Wilkinson", email = "sophie_wilkinson@sfu.ca", 
+           role = "aut", comment = c(ORCID = "0000-0002-4043-6277"))
+  )
 Description: 
     The PMC incorporates peatland hydrological research to model the 
     change in storage in the peatland water balance in a simple to use bookkeeping approach, akin to that used for the Drought Code and the Duff Moisture Code.
