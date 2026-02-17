@@ -27,7 +27,7 @@ PMC(
 
 \item{start_PMC}{Initial PMC value (i.e., initial water table depth in cm).}
 
-\item{C}{Lower limit for PET, constrained to a minimum of 0.3 to account for evapotranspiration from trees.}
+\item{C}{Lower limit for PET, constrained to a minimum of 0.15 to account for evapotranspiration from trees.}
 
 \item{Sy_min}{Minimum allowable specific yield. Default is 0.1.}
 
@@ -72,7 +72,7 @@ PMC(input_data,
          A = 0.8674,
          B = 0.0540,
          start_PMC = 10,
-         C = 0.1,
+         C = 0.15,
          Sy_min = 0.1,
          PMC_min = -5,
          year_to_plot = "2024")

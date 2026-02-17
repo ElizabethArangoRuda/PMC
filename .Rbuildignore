@@ -1,4 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
-^README\.Rmd$
+^\.RData$
+^\.RDataTmp
+^\.Rhistory$
+^README\.html$
