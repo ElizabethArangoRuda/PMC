@@ -37,7 +37,6 @@ clean_data <- function(input_data) {
   }
 
   required_cols <- c("Date", "Tmin", "Tmax", "PPT")
-
   #required_cols <- c("Date", "Tmin", "Tmax", "PPT", "ISI")
   #required_cols <- c("Date", "PPT", "Tavg", "T_Snow","Tmin", "Tmax", "T_Rain")
 

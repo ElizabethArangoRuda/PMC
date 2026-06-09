@@ -82,7 +82,8 @@ PMC <- function(input_data,
   if (start_PMC <= 0) { # Calculated PMC if the previous day had a PMC of 0 or negative (e.g., WT at or above the surface) by setting Sy to 1 due to the ponding. Sy is also set to 1 so it does not become more than 1.
     input.data$PET_multiplier[1] <- 1 # PET multiplier at the surface is 1 (full potential evapotranspiration is occurring). That is, when WT above the surface (i.e., soil is saturated - no water limitation).
   } else {
-    input_data$PET_multiplier[1] <- 1 - (0.0004 + (1 - C) / (1 + exp(-3.45 * (log(start_PMC) - 3.743))))
+    #input_data$PET_multiplier[1] <- 1 - (0.0004 + (1 - C) / (1 + exp(-3.45 * (log(start_PMC) - 3.743))))
+    input_data$PET_multiplier[1] <- 1 - ((1 - C) / (1 + exp(-3.45 * (log(start_PMC) - 3.743))))
   }
 
   input_data$PMC[1] <- start_PMC + ((input_data[[PET_column]][1]*input_data$PET_multiplier[1] - input_data$eff_Precip_cm[1])/input_data$Sy[1])
@@ -110,7 +111,9 @@ PMC <- function(input_data,
     if (prev_PMC <= 0) { # Calculated PMC if the previous day had a PMC of 0 or negative (e.g., WT at or above the surface) by setting Sy to 1 due to the ponding. Sy is also set to 1 so it does not become more than 1.
       PET_multiplier <- 1 # PET multiplier at the surface is 1 (full potential evapotranspiration is occurring). That is, when WT above the surface (i.e., soil is saturated - no water limitation).
     } else {
-      PET_multiplier <- 1 - (0.0004 + (1 - C) /
+      # PET_multiplier <- 1 - (0.0004 + (1 - C) /
+      #                          (1 + exp(-3.45 * (log(prev_PMC) - 3.743))))
+      PET_multiplier <- 1 - ((1 - C) /
                                (1 + exp(-3.45 * (log(prev_PMC) - 3.743))))
     }
 
@@ -185,7 +188,7 @@ PMC <- function(input_data,
   # Only remove columns that exist in input_data
   input_data <- dplyr::select(input_data, -dplyr::any_of(remove_col))
 
-  message("PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI() function.")
+  message("PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PSI() function.")
   # Return the processed data
   return(input_data)
 }
