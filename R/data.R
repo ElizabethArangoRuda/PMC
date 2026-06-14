@@ -1,6 +1,7 @@
 #' Mildred Lake Dataset
 #'
-#' A dataset that includes daily weather observations collected from the Mildred Lake weather station, located at a latitude of 56.9002499.
+#' A dataset that includes daily weather observations collected from the Mildred Lake weather station in Alberta.
+#' **Location Coordinates:** Latitude: 57.0833, Longitude: -111.5833.
 #'
 #' @format A tibble (or data frame) with 730 rows and 5 variables:
 #' \describe{
@@ -18,7 +19,8 @@
 #'
 #' Slave Lake Dataset
 #'
-#' A dataset that includes daily weather observations collected from the Slave Lake RCS weather station, located at a latitude of 55.2931.
+#' A dataset that includes daily weather observations collected from the Slave Lake RCS weather station in Alberta.
+#' **Location Coordinates:** Latitude: 55.2931, Longitude: -114.7772.
 #'
 #' @format A tibble (or data frame) with 730 rows and 5 variables:
 #' \describe{
@@ -35,7 +37,8 @@
 "Slave_Lake"
 #' Fort McMurray Dataset
 #'
-#' A dataset that includes daily weather observations collected from the Mildred Lake weather station, located at a latitude of 56.6533.
+#' A dataset that includes daily weather observations collected from the Mildred Lake weather station in Alberta.
+#' **Location Coordinates:** Latitude: 56.6500, Longitude: -111.2167.
 #'
 #' @format A tibble (or data frame) with 730 rows and 5 variables:
 #' \describe{
@@ -53,6 +56,7 @@
 #' Grande Prairie Dataset
 #'
 #' A dataset that includes daily weather observations collected from the Grande Prairie weather station, located at a latitude of 55.17972.
+#' **Location Coordinates:** Latitude: 55.1797, Longitude: -118.8850.
 #'
 #' @format A tibble (or data frame) with 730 rows and 5 variables:
 #' \describe{

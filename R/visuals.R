@@ -33,7 +33,7 @@
 #'   var4 = "eff_Precip_cm",
 #'   x_label_vr1 = "PET (cm)",
 #'   x_label_vr2 = "Tair (°C)",
-#'   x_label_vr3 = "Effective Precipitation (cm)",
+#'   x_label_vr3 = "EffPrecipi (cm)",
 #'   x_label_vr4 = "PMC",
 #'   year_to_plot = "2024"
 #' )
@@ -149,7 +149,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
       legend.key.size = ggplot2::unit(0.8, "cm"),
       legend.key.width = ggplot2::unit(1, "cm"),
       legend.key = ggplot2::element_rect(colour = NA, fill = NA),
-      axis.title.y = ggplot2::element_text(size = 14, colour = "black"),
+      axis.title.y = ggplot2::element_text(size = 18, colour = "black"),
       plot.title = ggplot2::element_text(hjust = 0.01, vjust = -8, size = 18),
       plot.margin = ggplot2::margin(0.1, 0.2, 0.1, 0.2, "cm")
     )
@@ -188,11 +188,7 @@ visuals <- function(input_data, var1, var2, var3, var4,
 
   P4
 
-  plotgrid <- cowplot::plot_grid(P1, P2, P3, P4,
-                                 #labels = c('A', 'B', 'C', 'D'),
-                                 ncol = 1,
-                                 align = 'v',
-                                 axis='lr')
+  plotgrid <- patchwork::wrap_plots(P1, P2, P3, P4, ncol = 1)
 
   print(plotgrid)
 

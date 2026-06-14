@@ -4,6 +4,7 @@
 # PMC
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 The PMC package provides tools to calculate the Peat Moisture Code
@@ -68,7 +69,7 @@ and formats. It is recommended to run this function before any other
 PMC-related functions.
 
 ``` r
-df <- clean_data(Mildred_Lake)
+df <- clean_data(Mildred_Lake) # Optional
 #> The 'PET' column is missing. You can calculate it using the 'PETpt()' function.
 #> Missing values in 'PPT' column have been replaced with 0.
 #> No missing values found.
@@ -83,6 +84,7 @@ multiplying by 0.1.
 
 ``` r
 ?mm_to_cm
+#> ℹ Rendering development documentation for "mm_to_cm"
 df <- mm_to_cm(df, columns = "PPT")
 #> The following column(s) were successfully converted from millimeters to centimeters: PPT
 #> You can now compute effective precipitation using the `eff_ppt()` function.
@@ -97,12 +99,16 @@ the minimum precipitation to be considered effective.
 
 ``` r
 ?eff_ppt
+#> ℹ Rendering development documentation for "eff_ppt"
 df <- eff_ppt(df, column = "PPT_cm", threshold = 0.1, year_to_plot = "2015")
-#> Effective precipitation was calculated using a threshold of 0.1
-#> You can now compute potential evapotranspiration using the `PETpt()` function.
 ```
 
-<img src="man/figures/README-c5-1.png" width="100%" /> PETpt()
+<img src="man/figures/README-c5-1.png" alt="" width="100%" />
+
+    #> Effective precipitation was calculated using a threshold of 0.1
+    #> You can now compute potential evapotranspiration using the `PETpt()` function.
+
+PETpt()
 
 Computes daily potential evapotranspiration (PET) using the
 Priestley–Taylor method, a simplified alternative to the Penman–Monteith
@@ -110,8 +116,9 @@ equation suitable for peatland environments.
 
 ``` r
 ?PETpt
+#> ℹ Rendering development documentation for "PETpt"
 df <- PETpt(df,
-  latitude = 65.2825,
+  latitude = 57.0833, # Use the latitude for this dataset from documentation.
     alpha = 1,
     y = 0.063,
     Gsc = 0.0820,
@@ -119,10 +126,11 @@ df <- PETpt(df,
     a = 0.17,
     b = 0.59,
     year_to_plot = "2014")
-#> PET calculation completed successfully. You may now proceed with PMC estimation using the `PMC()` function.
 ```
 
-<img src="man/figures/README-c6-1.png" width="100%" />
+<img src="man/figures/README-c6-1.png" alt="" width="100%" />
+
+    #> PET calculation completed successfully. You may now proceed with PMC estimation using the `PMC()` function.
 
 ## Computing the Peat Moisture Code (PMC)
 
@@ -133,6 +141,7 @@ decreases when water storage is replenished.
 
 ``` r
 ?PMC
+#> ℹ Rendering development documentation for "PMC"
 df <- PMC(df,
     PET_column = "PET",
     A = 0.8674,
@@ -142,17 +151,20 @@ df <- PMC(df,
     Sy_min = 0.1,
     PMC_min = 0.1,
     year_to_plot = "2014")
-#> PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PMCISI() function.
 ```
 
-<img src="man/figures/README-c7-1.png" width="100%" /> \## Visualization
-utilities
+<img src="man/figures/README-c7-1.png" alt="" width="100%" />
+
+    #> PMC was calculated successfully. If your dataset includes ISI, you can now proceed with the PMC_ISI calculation using the PSI() function.
+
+## Visualization utilities
 
 The package includes visuals(), a helper function to produce a
 four-panel figure summarizing key hydrometeorological variables.
 
 ``` r
 ?PMC
+#> ℹ Rendering development documentation for "PMC"
 df <- visuals(df,
     var1 = "PET",
     var2 = "Tavg",
@@ -166,4 +178,4 @@ df <- visuals(df,
   )
 ```
 
-<img src="man/figures/README-c8-1.png" width="100%" />
+<img src="man/figures/README-c8-1.png" alt="" width="100%" />

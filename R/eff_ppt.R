@@ -69,7 +69,7 @@ eff_ppt <- function(input_data, column, threshold, year_to_plot=NULL){
       labels = format(mid_dates, "%Y"),
       expand = c(0.004, 0.004)
     ) +
-    ggplot2::scale_y_continuous(quote("Effective Precipitation (cm)"),
+    ggplot2::scale_y_continuous(quote("EffPrecipi (cm)"),
                        expand = c(0.004, 0.004)) +
     ggplot2::theme(
       panel.background = ggplot2::element_rect(fill = "white", colour = "black"),

@@ -21,5 +21,6 @@ data(Fort_McMurray)
 }
 \description{
 A dataset that includes daily weather observations collected from the Grande Prairie weather station, located at a latitude of 55.17972.
+\strong{Location Coordinates:} Latitude: 55.1797, Longitude: -118.8850.
 }
 \keyword{datasets}

@@ -41,6 +41,14 @@ You can install the development version of PMC from [GitHub](https://github.com/
 devtools::install_github("ElizabethArangoRuda/PMC")
 ```
 
+```{r setup, include=FALSE}
+# FIX: Use the dollar sign ($) instead of an underscore (_)
+knitr::opts_chunk$set(echo = TRUE)
+
+# Load your local package development code
+devtools::load_all(".")
+```
+
 ## Example
 
 Load the package:
@@ -70,7 +78,7 @@ Prepares input data for PMC calculations by standardizing column names and forma
 It is recommended to run this function before any other PMC-related functions.
 
 ```{r c3, echo = TRUE}
-df <- clean_data(Mildred_Lake)
+df <- clean_data(Mildred_Lake) # Optional
 ```
 mm_to_cm()
 
@@ -96,7 +104,7 @@ Computes daily potential evapotranspiration (PET) using the Priestley–Taylor m
 ```{r c6, echo = TRUE}
 ?PETpt
 df <- PETpt(df,
-  latitude = 65.2825,
+  latitude = 57.0833, # Use the latitude for this dataset from documentation.
     alpha = 1,
     y = 0.063,
     Gsc = 0.0820,
@@ -127,7 +135,7 @@ df <- PMC(df,
 
 The package includes visuals(), a helper function to produce a four-panel figure summarizing key hydrometeorological variables.
 
-```{r c8, echo = TRUE}
+```{r c8, echo = TRUE, fig.height=8}
 ?PMC
 df <- visuals(df,
     var1 = "PET",

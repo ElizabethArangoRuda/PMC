@@ -20,6 +20,7 @@ Data obtained from \href{https://climatedata.ca/download/#station-download}{Clim
 data(Fort_McMurray)
 }
 \description{
-A dataset that includes daily weather observations collected from the Mildred Lake weather station, located at a latitude of 56.6533.
+A dataset that includes daily weather observations collected from the Mildred Lake weather station in Alberta.
+\strong{Location Coordinates:} Latitude: 56.6500, Longitude: -111.2167.
 }
 \keyword{datasets}

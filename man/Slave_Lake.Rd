@@ -20,6 +20,7 @@ Data obtained from \href{https://climatedata.ca/download/#station-download}{Clim
 data(Slave_Lake)
 }
 \description{
-A dataset that includes daily weather observations collected from the Slave Lake RCS weather station, located at a latitude of 55.2931.
+A dataset that includes daily weather observations collected from the Slave Lake RCS weather station in Alberta.
+\strong{Location Coordinates:} Latitude: 55.2931, Longitude: -114.7772.
 }
 \keyword{datasets}

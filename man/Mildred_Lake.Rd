@@ -20,6 +20,7 @@ Data obtained from \href{https://climatedata.ca/download/#station-download}{Clim
 data(Mildred_Lake)
 }
 \description{
-A dataset that includes daily weather observations collected from the Mildred Lake weather station, located at a latitude of 56.9002499.
+A dataset that includes daily weather observations collected from the Mildred Lake weather station in Alberta.
+\strong{Location Coordinates:} Latitude: 57.0833, Longitude: -111.5833.
 }
 \keyword{datasets}

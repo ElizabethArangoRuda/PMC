@@ -61,7 +61,7 @@ visuals(
   var4 = "eff_Precip_cm",
   x_label_vr1 = "PET (cm)",
   x_label_vr2 = "Tair (°C)",
-  x_label_vr3 = "Effective Precipitation (cm)",
+  x_label_vr3 = "EffPrecipi (cm)",
   x_label_vr4 = "PMC",
   year_to_plot = "2024"
 )
