@@ -35,7 +35,7 @@ eff_ppt <- function(input_data, column, threshold, year_to_plot=NULL){
 
   input_data <- dplyr::mutate(input_data, eff_Precip_cm = dplyr::case_when(
     input_data[[column]]   < threshold ~ 0,  # Set negative or small values to 0
-      TRUE ~ input_data[[column]] - threshold          # Substract canopy interception
+      TRUE ~ input_data[[column]]          # Substract canopy interception
     ))
 
   # Check for "Date" Column
